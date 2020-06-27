@@ -81,7 +81,7 @@
             #landingPage {
                 display: grid;
                 grid-template-columns: [leftDisplayMargin] 15% [firstColumnStart] 20% [firstColumnEnd] 5% [secondColumnStart] 20% [secondColumnEnd] 5% [thirdColumnStart] 20% [thirdColumnEnd] 20% [rightDisplayMargin];
-                grid-template-rows: [bottomOfTitle] 30% [topOfFirstRow] 100% [bottomOfFirstRow] 15% [topOfSecondRow] 100% [bottomOfSecondRow];
+                grid-template-rows: [bottomOfTitle] 30% [topOfFirstRow] 100% [bottomOfFirstRow] 15% [topOfSecondRow] 100% [bottomOfSecondRow] 15% [topOfThirdRow] 100% [bottomOfThirdRow];
             }
             .landingPadButton {
                 text-align: center;
@@ -129,6 +129,13 @@
             grid-row-start: topOfSecondRow;
             grid-row-end: bottomOfSecondRow;
             background-color: magenta;
+            }
+            #hideoutChecklistButton {
+            grid-column-start: secondColumnStart;
+            grid-column-end: secondColumnEnd;
+            grid-row-start: topOfThirdRow;
+            grid-row-end: bottomOfThirdRow;
+            background-color: aqua;
             }
             #mapPage {
                 display: grid;
@@ -249,6 +256,9 @@
                 text-align: center;
                 align-content: center;
             }
+            table, th, td {
+                border: 1px solid black;
+            }
         </style>
     </head>
     <body>
@@ -276,6 +286,7 @@
                 <div id="navItems">
                     <text class="navBarItem" onclick="showItems()">Items</text>
                 </div>
+                
             </div>
             <div id="title">
                 Welcome To Tarkov
@@ -295,6 +306,7 @@
                     <div class="landingPadButton" id="ammoButton">
                         <text onclick="showAmmo()">See Ammo</text></div>
                     <div class="landingPadButton" id="itemsButton"><text onclick="showItems()">See Items</text></div>
+                    <div class="landingPadButton" id="hideoutChecklistButton"><text onclick="showHideoutChecklist()">Hideout Checklist</text></div>
                 </div>
                 <div id="mapPage">
                     <div id="mapSelector" onchange="getMap()">
@@ -325,6 +337,703 @@
                 <div id="myKeys">
                     <!-- Input checklist of keys, save the data locally to keep the data after refresh -->
                     
+                </div>
+                <div id="hideoutChecklistPage">
+                    <div id="hideoutTable">
+                        <table id="hideoutNeeds">
+                            <tr>
+                                <th>Module</th>
+                                <th>Level</th>
+                                <th>Benefit</th>
+                                <th>Money Required</th>
+                                <th>Requirement</th>
+                                <th>Requirement</th>
+                                <th>Requirement</th>
+                                <th>Requirement</th>
+                                <th>Requirement</th>
+                                <th>Requirement</th>
+                                <th>Requirement</th>
+                                <th>Requirement</th>
+                                <th>Requirement</th>
+                            </tr>
+                            <tr>
+                                <td>Air Filtering Unit</td>
+                                <td>1</td>
+                                <td>Group of skills leveling boost: Phisical, +40%</td>
+                                <td>10,000 Dollars</td>
+                                <td>Skier Loyalty Level 3</td>
+                                <td>Level 3 Generator</td>
+                                <td>Level 3 Vents</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Bitcoin Farm</td>
+                                <td>1</td>
+                                <td>Farming Physical Bitcoins<br> Additional Slots +10 for Graphics Card</td>
+                                <td>N/A</td>
+                                <td>Level 2 Intelligence Center</td>
+                                <td>10 CPU Fans</td>
+                                <td>5 Power Supply Units</td>
+                                <td>5 Powercord</td>
+                                <td>1 Electric Drill</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Bitcoin Farm</td>
+                                <td>2</td>
+                                <td>Farming Physical Bitcoins<br> Additional Slots +15 for Graphics Card (25 in total)</td>
+                                <td>N/A</td>
+                                <td>15 CPU Fan</td>
+                                <td>5 Power Supply Unit</td>
+                                <td>5 Printed Circuit Board</td>
+                                <td>2 Phase Control Relay</td>
+                                <td>Level 3 Generator</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Bitcoin Farm</td>
+                                <td>3</td>
+                                <td>Farming Physical Bitcoins<br> Additional Slots +25 for Graphics Card (50 in total)</td>
+                                <td>N/A</td>
+                                <td>25 CPU Fan</td>
+                                <td>10 Silicone Tubes</td>
+                                <td>2 Electric Motor</td>
+                                <td>4 Pressure Gauges</td>
+                                <td>Level 1 Solar Power</td>
+                                <td>Level 3 Water Collector</td>
+                                <td>N/A</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Booze Generator</td>
+                                <td>1</td>
+                                <td>Produce "Fierce Hatchling" Moonshine</td>
+                                <td>N/A</td>
+                                <td>4 Silicone Tubes</td>
+                                <td>2 Analog Thermometers</td>
+                                <td>5 Corrugated Hose</td>
+                                <td>Level 3 Water Collector</td>
+                                <td>Level 3 Nutritional Unit</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Generator</td>
+                                <td>1</td>
+                                <td>Additional Fuel Slots +2</td>
+                                <td>100,000 Roubles</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td></td>
+                                <td></td>
+                                
+                            </tr>
+                            <tr>
+                                <td>Generator</td>
+                                <td>2</td>
+                                <td>Additional Fuel Slots +2 (4 Total)</td>
+                                <td>N/A</td>
+                                <td>5 Phase Control Relays</td>
+                                <td>1 Electric Motor</td>
+                                <td>15 Wires</td>
+                                <td>Level 2 Security</td>
+                                <td>Level 2 Vents</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Generator</td>
+                                <td>3</td>
+                                <td>Additional Fuel Slots +2 (6 Total)</td>
+                                <td>N/A</td>
+                                <td>6 Phase Control Relays</td>
+                                <td>2 Electric Motors</td>
+                                <td>5 Spark Plug</td>
+                                <td>5 Power Supply Unit</td>
+                                <td>Level 3 Security</td>
+                                <td>Level 3 Vents</td>
+                                <td>Mechanic Loyalty Level 3</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Heating</td>
+                                <td>1</td>
+                                <td>Energy Regeneration rate +2 EP/hr</td>
+                                <td>25,000 Roubles</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Heating</td>
+                                <td>2</td>
+                                <td>Energy Regeneration rate +5 EP/hr (7 in Total)</td>
+                                <td>50, 000 Roubles</td>
+                                <td>Level 1 Endurance</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Heating</td>
+                                <td>3</td>
+                                <td>Energy Regeneration rate +7 EP/hr (14 in Total) <br> Negative Effects Removal Rate -50%</td>
+                                <td>N/A</td>
+                                <td>8 Radiator Helix</td>
+                                <td>8 Wires</td>
+                                <td>Level 2 Generator</td>
+                                <td>Level 2 Workbench</td>
+                                <td>Level 2 Ragman</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Illumination</td>
+                                <td>1</td>
+                                <td>Lights up your hideout with candles</td>
+                                <td>10,000 Roubles</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Illumination</td>
+                                <td>2</td>
+                                <td>Lights up your hideout with basic lights</td>
+                                <td>N/A</td>
+                                <td>14 Light Bulbs</td>
+                                <td>5 Wires</td>
+                                <td>Level 1 Generator</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Illumination</td>
+                                <td>3</td>
+                                <td>Lights up your hideout with florescent lights</td>
+                                <td>50,000 Roubles</td>
+                                <td>7 Capacitors</td>
+                                <td>Level 2 Generator</td>
+                                <td>Mechanic Loyalty Level 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Intelligence Center</td>
+                                <td>1</td>
+                                <td>Scav Cooldown Timer -15% <br> Quest Money Reward Boose +5%</td>
+                                <td>N/A</td>
+                                <td>1 Folder with Intelligence</td>
+                                <td>Level 2 Security</td>
+                                <td>Level 2 Vents</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Intelligence Center</td>
+                                <td>2</td>
+                                <td>Quest Money Reward Boost Extra 10% (15% Total) <br>Insurance Return Time -20% <br>Produce Secure Flash Drives <br>Produce VPX Flash Storage Module <br>Produce Virtex Programmable Processor <br>Produce Military COFDM wireless Signal Transmitter <br>Produce UHF RFID Reader <br>Produce Graphics Card</td>
+                                <td>N/A</td>
+                                <td>3 Folder with Intelligence</td>
+                                <td>3 Secure Flash Drive</td>
+                                <td>4 Powercord</td>
+                                <td>4 Damaged Hard Drive</td>
+                                <td>Level 3 Security</td>
+                                <td>Level 3 Medstation</td>
+                                <td>Level 3 Nutrition Unit</td>
+                                <td>Mechanic Loyalty Level 2</td>
+                                <td>Level 3 Attention</td>
+                            </tr>
+                            <tr>
+                                <td>Intelligence Center</td>
+                                <td>3</td>
+                                <td>Scav Cooldown Timer Extra 20% (-35% Total) <br>Flea Market Commission -30% <br>Produce Folder with Intelligence</td>
+                                <td>N/A</td>
+                                <td>2 Military COFDM Wireless Signal Transmitters</td>
+                                <td>2 VPX Flash Storage Modules</td>
+                                <td>3 Gas Analyzers</td>
+                                <td>4 Military Cable</td>
+                                <td>Level 3 Generator</td>
+                                <td>Prapor Loyalty Level 3</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Lavatory</td>
+                                <td>1</td>
+                                <td>Produce Toilet Paper <br>Produce Air Filter for Gas Mask <br> Produce Scav Backpack <br>Produce Aseptic Bandage <br>Produce Ripstop Cloth <br>Produce Army Bandage</td>
+                                <td>2,000 Roubles</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Lavatory</td>
+                                <td>2</td>
+                                <td>Produce Schaman Shampoo <br>Produce Ox Bleach <br> Produce Expeditionary Fuel Tank <br>Produce Magazine Case <br>Produce Corrugated Hose <br>Produce WD-40 100ml <br>Produce Clin Wiper <br>Produce Module-3M Body Armor <br>Produce Splav Tarzan M22 Rig <br>Produce 60-round 6L31 5.45x39 magazine for AK074 and compatibles <br> Produce Lucky Scav Junkbox</td>
+                                <td>N/A</td>
+                                <td>3 Corrugate Hoses</td>
+                                <td>5 Pack of Screws</td>
+                                <td>1 Electric Drill</td>
+                                <td>Level 1 Water Collector</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Lavatory</td>
+                                <td>3</td>
+                                <td>Produce FP-100 Filter Absorber</td>
+                                <td>N/A</td>
+                                <td>6 Corrugated Hoses</td>
+                                <td>2 Pressure Gauges</td>
+                                <td>1 Set of tools</td>
+                                <td>3 Xenomorph Sealing Foam</td>
+                                <td>Level 2 Water Collector</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Library</td>
+                                <td>1</td>
+                                <td>Additional EXP +15% <br>Group of Skills Leveling Boost: Practical +30%</td>
+                                <td>400,000 Roubles</td>
+                                <td>Level 3 Rest Space</td>
+                                <td>Level 8 Memory Skill</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Medstation</td>
+                                <td>1</td>
+                                <td>Produce Salewa First Aid Kit <br>Produce AI-2 Medkit <br>Health Regen +27 HP/Hour</td>
+                                <td>25,000 Roubles</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Medstation</td>
+                                <td>2</td>
+                                <td>Produce IFAK Personal Tactical First Aid Kit <br>Produce Pile of Meds <br>Produce Combat Stimulant Injector SJ1 TGLabs <br>Produce Morphine <br>Produce Portable Defibrilator <br>Health Regen Rate +55 HP/Hour (82HP/HR Total) </td>
+                                <td>50,000 Roubles</td>
+                                <td>2 Medical Bloodsets</td>
+                                <td>3 Saline Solution</td>
+                                <td>Therapist Loyalty Level 2</td>
+                                <td>Level 2 Health</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Medstation</td>
+                                <td>3</td>
+                                <td>Health Regeneration Rate +92 HP/hour (174HP/Hr Total)</td>
+                                <td>150,000 Roubles</td>
+                                <td>4 Saline Solution</td>
+                                <td>1 LEDX Skin Transilluminator</td>
+                                <td>1 Opthalmoscope</td>
+                                <td>Therapist Loyalty Level 3</td>
+                                <td>Skier Loyalty Level 2</td>
+                                <td>Vitality Level 3</td>
+                                <td>Level 2 Lavatory</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Nutritional Unit</td>
+                                <td>1</td>
+                                <td>Energy Regen Rate +6EP/Hour <br>Produce Iskra Lunch Box</td>
+                                <td>25,000 Roubles</td>
+                                <td>2 Phase Control Relay</td>
+                                <td>Level 1 Generator</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Nutritional Unit</td>
+                                <td>2</td>
+                                <td>Energy Regen Rate +6 EP/Hr (12EP/Hr Total) <br>Health Regen Rate +32 HP/Hr <br>Produce Wilston Cigarettes <br>Produce Condensed Milk <br>Produce Slickers Bar <br>Produce Pack of Sugar <br>Produce Can of Beef Stew</td>
+                                <td>N/A</td>
+                                <td>4 Wrench</td>
+                                <td>2 Corrugated Hoses</td>
+                                <td>2 Heat-Exchange Alkali Surface Washer</td>
+                                <td>1 Phase Control Relay</td>
+                                <td>Level 2 Lavatory</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Nutritional Unit</td>
+                                <td>3</td>
+                                <td>Energy Regen Rate +24 EP/Hr (36 EP/Hr Total) <br>Hydration Regen Rate +12 WP/hr <br>Produce Bottle of Vodka Tarkovskaya <br>Produce Water Bottle with a Filter Aquamari</td>
+                                <td>125,000 Roubles</td>
+                                <td>3 Coffee Majaica</td>
+                                <td>3 Sodium Bicabonate</td>
+                                <td>Level 2 Generator</td>
+                                <td>Level 3 Lavatory</td>
+                                <td>Level 2 Stash</td>
+                                <td>Level 3 Metabolism</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Rest Space</td>
+                                <td>1</td>
+                                <td>Negative Effects Removal Rate -10%</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Rest Space</td>
+                                <td>2</td>
+                                <td>Energy Regen Rate +3 EP/Hr <br>Health Regen Rate +23 HP/hr</td>
+                                <td>35,000 Roubles</td>
+                                <td>Level 2 Generator</td>
+                                <td>Level 2 Heating</td>
+                                <td>Level 2 Ragman</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Rest Space</td>
+                                <td>3</td>
+                                <td>Health Regen Rate +46/hr (69 HP/hr Total) <br>Maximum Energy Reserve +10pts</td>
+                                <td>3,000 Dollars</td>
+                                <td>4 Powercords</td>
+                                <td>5 Capacitors</td>
+                                <td>7 Wires</td>
+                                <td>Level 3 Generator</td>
+                                <td>Level 3 Heating</td>
+                                <td>Skier Loyalty Level 3</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Scav Case</td>
+                                <td>1</td>
+                                <td>Scavs will try to find various items for you depending on how much you pay them</td>
+                                <td>N/A</td>
+                                <td>4 Bronze Lions</td>
+                                <td>6 Gold Skull Ring</td>
+                                <td>8 Golden Neck Chain</td>
+                                <td>4 Roler Submariner Gold Watch</td>
+                                <td>Level 2 Intelligence Center</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Security</td>
+                                <td>1</td>
+                                <td>None</td>
+                                <td>20,000 Roubles</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Security</td>
+                                <td>2</td>
+                                <td>None</td>
+                                <td>45,000 Roubles</td>
+                                <td>Level 2 Endurance</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Security</td>
+                                <td>3</td>
+                                <td>None</td>
+                                <td>N/A</td>
+                                <td>2 Working LCD</td>
+                                <td>4 Wires</td>
+                                <td>8 Nixxor Lenses</td>
+                                <td>1 SSD Drive</td>
+                                <td>Level 3 Illumination</td>
+                                <td>Mechanic Loyalty Level 2</td>
+                                <td>N/A</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Shooting Range</td>
+                                <td>1</td>
+                                <td>The Ability to test out your Firearms</td>
+                                <td>4 Packs of Nails</td>
+                                <td>5 Screw Nuts</td>
+                                <td>5 bolts</td>
+                                <td>3 Duct Tape</td>
+                                <td>Level 2 Illumination</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Solar Power</td>
+                                <td>1</td>
+                                <td>Fuel Consumption -50%</td>
+                                <td>15,000 Euros</td>
+                                <td>4 Military Cable</td>
+                                <td>2 Phased Array Element</td>
+                                <td>4 Military Power Filter</td>
+                                <td>Level 3 Generator</td>
+                                <td>Level 3 Workbench</td>
+                                <td>Peacekeeper Loyalty Level 4</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Vents</td>
+                                <td>1</td>
+                                <td>None</td>
+                                <td>25,000 Roubles</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Vents</td>
+                                <td>2</td>
+                                <td>None</td>
+                                <td>N/A</td>
+                                <td>1 Electric Motor</td>
+                                <td>1 Car Battery</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Vents</td>
+                                <td>3</td>
+                                <td>None</td>
+                                <td>N/A</td>
+                                <td>4 Electric motor</td>
+                                <td>14 Wires</td>
+                                <td>5 Printed Circuit Board</td>
+                                <td>4 Car Battery</td>
+                                <td>Level 2 Generator</td>
+                                <td>Level 2 Strength</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Water Collector</td>
+                                <td>1</td>
+                                <td>Hydration Regen Rate +6 WP/hr</td>
+                                <td>N/A</td>
+                                <td>4 Corrugated Hoses</td>
+                                <td>5 Bolts</td>
+                                <td>5 Screw Nuts</td>
+                                <td>3 Duct Tape</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Water Collector</td>
+                                <td>2</td>
+                                <td>Hydration Regen Rate +12 WP/hr (18 WP/hr Total)</td>
+                                <td>N/A</td>
+                                <td>6 Corrugated Hoses</td>
+                                <td>2 Electric Motors</td>
+                                <td>2 Sets of Tools</td>
+                                <td>Level 2 Workbench</td>
+                                <td>Jaeger Loyalty Level 2</td>
+                                <td>Level 3 Attention</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Water Collector</td>
+                                <td>3</td>
+                                <td>Hydration Regen Rate +6 WP/hr (42 WP/hr Total) <br>Produce Purified Water</td>
+                                <td>125,000 Roubles</td>
+                                <td>2 Pliers Elite</td>
+                                <td>5 Shustrilo Sealing Foam</td>
+                                <td>Level 3 Generator</td>
+                                <td>Level 3 Heating</td>
+                                <td>Jaeger Loyalty Level 3</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Workbench</td>
+                                <td>1</td>
+                                <td>Off-raid weapon customization <br>Produce 9x18 PM< mm RG028 gzh <br>Produce 12/70 8.5mm "Magnum" Buckshot <br>Produce Wires <br>Produce Capacitors <br>Produce Gunpowder "Hawk" <br>Produce Gunpowder "Kite" <br>Produce Weapon Parts <br>Produce Printed Circuit Board <br>Produce Powercord <br>Produce Broken LCD <br>Produce VOG-25 Khattabka Grenade</td>
+                                <td>N/A</td>
+                                <td>2 Screw Nuts</td>
+                                <td>2 Bolts</td>
+                                <td>1 Leatherman Multitool</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Workbench</td>
+                                <td>2</td>
+                                <td>Produce 7.62x54R SNB <br>Produce 5.45x39mm PP <br>Produce 9x39mm SP-6 <br>Produce AK-74M 5.45x39 assault rifle <br>Produce Gunpowder "Hawk" (New Recipe) <br>Produce Gunpowder "Eagle" <br>Produce Car Battery <br>Produce Rechargeable Battery <br>Produce Electric Motor <br>Produce Zarya Stun Grenade <br> 5.56x45mm M856A1 <br>Produce 9x19mm AP 6.3 </td>
+                                <td>N/A</td>
+                                <td>3 Sets of Tools</td>
+                                <td>2 Electric Drills</td>
+                                <td>6 Bolts</td>
+                                <td>Level 2 Illumination</td>
+                                <td>Mechanic Loyalty Level 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Workbench</td>
+                                <td>3</td>
+                                <td>Produce 5.56x45mm Warmage <br>Produce RGD-5 Hand Grenade <br>Produce 7.62x39mm BP <br>Produce 9x19mm RIP <br>Produce 5.45x39mm 7N39 "Igolnik" <br>7.62x51mm M61 <br>12/70 AP-20 SLug <br>5.56x45mm M995 <br>9x39mm 7N12 BP</td>
+                                <td>195,000 Roubles</td>
+                                <td>2 Pliers Elite</td>
+                                <td>1 FireKlean gun lube</td>
+                                <td>Level 2 Stash</td>
+                                <td>Mechanic Loyalty Level 3</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
                 <div id="dealersPage">
                     <div id="vendorSelect" onchange="vendorSelect()" style="align-content: center; text-align:center;">
@@ -1756,6 +2465,7 @@
                 $("#questsPage").hide();
                 $("#ammoPage").hide();
                 $("#itemsPage").hide();
+                $("#hideoutChecklistPage").hide();
                 let currentMap = 'customs';
                 function showMaps() {
                     $("#landingPage").hide();
@@ -1764,6 +2474,7 @@
                     $("#questsPage").hide();
                     $("#ammoPage").hide();
                     $("#itemsPage").hide();
+                    $("#hideoutChecklistPage").hide();
                     $("#mapPage").show();
                     $("#factoryMap").hide();
                     $("#factoryMap2").hide();
@@ -1834,7 +2545,7 @@
                      break;
                      }
                 };
-
+                
                 function vendorSelect() {
                     vendor = $("#vendorSelection").val();
                     switch (vendor) {
@@ -2051,7 +2762,19 @@
                     $("#questsPage").hide();
                     $("#ammoPage").hide();
                     $("#itemsPage").hide();
+                    $("#hideoutChecklistPage").hide();
                     $("#keyPage").show();
+                }
+                function showHideoutChecklist() {
+                    $("#landingPage").hide();
+                    $("#mapPage").hide();
+                    $("#dealersPage").hide();
+                    $("#questsPage").hide();
+                    $("#ammoPage").hide();
+                    $("#itemsPage").hide();
+                    $("#keyPage").hide();
+                    $("#hideoutChecklistPage").show();
+
                 }
                 function showDealers() {
                     $("#landingPage").hide();
@@ -2060,6 +2783,7 @@
                     $("#questsPage").hide();
                     $("#ammoPage").hide();
                     $("#itemsPage").hide();
+                    $("#hideoutChecklistPage").hide();
                     $("#dealersPage").show();
                 
                 }
@@ -2070,6 +2794,7 @@
                     $("#mapPage").hide();
                     $("#ammoPage").hide();
                     $("#itemsPage").hide();
+                    $("#hideoutChecklistPage").hide();
                     $("#questsPage").show();
                     $("#therQuestPic").hide();
                     $("#skierQuestPic").hide();
@@ -2088,6 +2813,7 @@
                     $("#landingPage").hide();
                     $("#keyPage").hide();
                     $("#dealersPage").hide();
+                    $("#hideoutChecklistPage").hide();
                     $("#questsPage").hide();
                     $("#mapPage").hide();
                     $("#itemsPage").hide();
@@ -2098,6 +2824,7 @@
                     $("#keyPage").hide();
                     $("#dealersPage").hide();
                     $("#questsPage").hide();
+                    $("#hideoutChecklistPage").hide();
                     $("#ammoPage").hide();
                     $("#mapPage").hide();
                     $("#itemsPage").show();
