@@ -1,0 +1,2107 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Welcome to Tarkov</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <style>
+            body {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                display: grid;
+                grid-template-columns: [leftMargin] 20% [endOfLeftNav] 80% [rightMargin];
+                grid-template-rows: [topOfPage] 5% [bottomOfNavbar] 15% [bottomOfTitle] 90% [bottomOfDisplay] 5% [bottomOfPage];
+                background-color: grey;
+            }
+            table {
+                border-collapse: collapse;
+            }
+            tr { 
+                border: solid;
+                border-width: 1px 0;
+            }
+            #navbar {
+                grid-column-start: leftMargin;
+                grid-column-end: rightMargin;
+                grid-row-start: topOfPage;
+                grid-row-end: bottomOfNavbar;
+                display: grid;
+                grid-gap: 5px;
+                align-content: center;
+                grid-template-columns: [one] 40px [spacer1] 2px [two] 35px [spacer2] 2px [three] 50px [spacer3] 2px [four] 50px [spacer4] 2px [five] 50px [spacer5] 2px [six] 50px [spacer6];
+                background-color: grey;
+                padding-left: 15px;
+            }
+            .navSpacer {
+                background-color: black;
+            }
+            #navMaps {
+                grid-column-start: one;
+                grid-column-end: spacer1;
+            }
+            #navKeys {
+                grid-column-start: two;
+                grid-column-end: spacer2;
+            }
+            #navDealers {
+                grid-column-start: three;
+                grid-column-end: spacer3;
+            }
+            #navQuests {
+                grid-column-start: four;
+                grid-column-end: spacer4;
+            }
+            #navAmmo {
+                grid-column-start: five;
+                grid-column-end: spacer5;
+            }
+            #navItems {
+                grid-column-start: six;
+                grid-column-end: spacer6;
+            }
+            #title {
+                grid-column-start: leftMargin;
+                grid-column-end: rightMargin;
+                grid-row-start: bottomOfNavbar;
+                grid-row-end: bottomOfTitle;
+                border: 2px black solid;
+                background:darkslategray;
+                color: red;
+                text-shadow: 4px 4px #000000; 
+                font-size: 50;
+                text-align: center;
+                padding-top: 1.5%;
+            }
+            #display {
+                grid-column-start: leftMargin;
+                grid-column-end: rightMargin;
+                grid-row-start: bottomOfTitle;
+                grid-row-end: bottomOfDisplay;
+            }
+            #landingPage {
+                display: grid;
+                grid-template-columns: [leftDisplayMargin] 15% [firstColumnStart] 20% [firstColumnEnd] 5% [secondColumnStart] 20% [secondColumnEnd] 5% [thirdColumnStart] 20% [thirdColumnEnd] 20% [rightDisplayMargin];
+                grid-template-rows: [bottomOfTitle] 30% [topOfFirstRow] 100% [bottomOfFirstRow] 15% [topOfSecondRow] 100% [bottomOfSecondRow];
+            }
+            .landingPadButton {
+                text-align: center;
+                justify-items: center;
+                cursor: pointer;
+            }
+            #mapsButton {
+                grid-column-start: firstColumnStart;
+                grid-column-end: firstColumnEnd;
+                grid-row-start: topOfFirstRow;
+                grid-row-end: bottomOfFirstRow;
+                background-color: green;
+            }
+            #keysButton {
+            grid-column-start: secondColumnStart;
+            grid-column-end: secondColumnEnd;
+            grid-row-start: topOfFirstRow;
+            grid-row-end: bottomOfFirstRow;
+            background-color: orange;
+            }
+            #dealersButton {
+            grid-column-start: thirdColumnStart;
+            grid-column-end: thirdColumnEnd;
+            grid-row-start: topOfFirstRow;
+            grid-row-end: bottomOfFirstRow;
+            background-color: red;
+            }
+            #questsButton {
+            grid-column-start: firstColumnStart;
+            grid-column-end: firstColumnEnd;
+            grid-row-start: topOfSecondRow;
+            grid-row-end: bottomOfSecondRow;
+            background-color: blue;
+            }
+            #ammoButton {
+            grid-column-start: secondColumnStart;
+            grid-column-end: secondColumnEnd;
+            grid-row-start: topOfSecondRow;
+            grid-row-end: bottomOfSecondRow;
+            background-color: tan;
+            }
+            #itemsButton {
+            grid-column-start: thirdColumnStart;
+            grid-column-end: thirdColumnEnd;
+            grid-row-start: topOfSecondRow;
+            grid-row-end: bottomOfSecondRow;
+            background-color: magenta;
+            }
+            #mapPage {
+                display: grid;
+                grid-template-columns: 2% [leftDisplayMargin] 15% [leftKeyEdge] 60% [rightKeyEdge] 15% [rightDisplayMargin] 2%;
+                grid-template-rows: [bottomOftitle] 2% [topOfSelector] 4% [bottomOfSelector] 2% [topOfMap] 60% [bottomOfMap] 5% [topOfKey] 10% [bottomOfKey]; 
+            }
+            #mapSelector {
+                grid-column-start: leftKeyEdge;
+                grid-column-end: rightKeyEdge;
+                grid-row-start: topOfSelector;
+                grid-row-end: bottomOfSelector;
+                text-align: center;
+            }
+            #actualMap {
+                grid-column-start: leftDisplayMargin;
+                grid-column-end: rightDisplayMargin;
+                grid-row-start: topOfMap;
+                grid-row-end: bottomOfMap;
+            }
+            #mapKey {
+                grid-column-start: leftKeyEdge;
+                grid-column-end: rightKeyEdge;
+                grid-row-start: topOfKey;
+                grid-row-end: bottomOfKey;
+            }
+            #vendor {
+                display: grid;
+                grid-template-columns: 40% [leftTableMargin] 10% [edgeOfPic] 30% [endOfLevel] 30% [endOfReqs] 5%;
+                grid-template-rows: 1% [topofTable] 30% [bottomOfHeaders] 10% [level1] 10% [level2] 10% [level3] 10% [level4] 10% [topOfBestItems] 10% [bottomOfTable];
+                grid-gap: 5px;
+            }
+            #vendorPicture {
+                text-align: center;
+                margin-top: 5px;
+            }
+            #lvlHeader {
+                grid-column-start: leftTableMargin;
+                grid-column-end: endOfReqs;
+                grid-row-start: topOfTable;
+                grid-row-end: bottomOfHeaders;
+            }
+            #reqHeader {
+                grid-column-start: edgeOfPic;
+                grid-column-end: endOfLevel;
+                grid-row-start: topOfTable;
+                grid-row-end: bottomOfHeaders;
+            }
+            #lvl1 {
+                grid-column-start: leftTableMargin;
+                grid-column-end: edgeOfPic;
+                grid-row-start: level1;
+                grid-row-end: level2;
+            }
+            #lvl1reqs {
+                grid-column-start: edgeOfPic;
+                grid-column-end: endOfLevel;
+                grid-row-start: level1;
+                grid-row-end: level2;
+            }
+            #lvl2 {
+            grid-column-start: leftTableMargin;
+            grid-column-end: edgeOfPic;
+            grid-row-start: level2;
+            grid-row-end: level3;
+            }
+            #lvl2reqs {
+            grid-column-start: edgeOfPic;
+            grid-column-end: endOfLevel;
+            grid-row-start: level2;
+            grid-row-end: level3;
+            }
+            #lvl3 {
+            grid-column-start: leftTableMargin;
+            grid-column-end: edgeOfPic;
+            grid-row-start: level3;
+            grid-row-end: level4;
+            }
+            #lvl3reqs {
+            grid-column-start: edgeOfPic;
+            grid-column-end: endOfLevel;
+            grid-row-start: level3;
+            grid-row-end: level4;
+            }
+            #lvl4 {
+            grid-column-start: leftTableMargin;
+            grid-column-end: edgeOfPic;
+            grid-row-start: level4;
+            grid-row-end: bottomOfTable;
+            }
+            #lvl4reqs {
+            grid-column-start: edgeOfPic;
+            grid-column-end: endOfLevel;
+            grid-row-start: level4;
+            grid-row-end: topOfBestItems;
+            }
+            #bestPrices {
+                grid-column-start:leftTableMargin;
+                grid-column-end:endOfLevel;
+                grid-row-start: topOfBestItems;
+                grid-row-end: bottomOfTable;
+            }
+            #ammoIframe {
+                margin-left: 10%;
+            }
+            #keysIframe {
+                margin-left: 10%;
+            }
+            #footer {
+                grid-column-start: leftMargin;
+                grid-column-end: rightMargin;
+                grid-row-start: bottomOfDisplay;
+                grid-row-end: bottomOfPage;
+            }
+            .navBarItem {
+                cursor: pointer;
+            }
+            #questsPage {
+                text-align: center;
+                align-content: center;
+            }
+        </style>
+    </head>
+    <body>
+            <div id="navbar">
+                <div id="navMaps">
+                    <text class="navBarItem" onclick="showMaps()">Maps</text>
+                </div>
+                <div class="navSpacer">|</div>
+                <div id="navKeys">
+                    <text class="navBarItem" onclick="showKeys()">Keys</text>
+                </div>
+                <div class="navSpacer">|</div>
+                <div id="navDealers">
+                    <text class="navBarItem" onclick="showDealers()">Dealers</text>
+                </div>
+                <div class="navSpacer">|</div>
+                <div id="navQuests">
+                    <text class="navBarItem" onclick="showQuests()">Quests</text>
+                </div>
+                <div class="navSpacer">|</div>
+                <div id="navAmmo">
+                    <text class="navBarItem" onclick="showAmmo()">Ammo</text>
+                </div>
+                <div class="navSpacer">|</div>
+                <div id="navItems">
+                    <text class="navBarItem" onclick="showItems()">Items</text>
+                </div>
+            </div>
+            <div id="title">
+                Welcome To Tarkov
+            </div>
+            <div id="display">
+                <div id="landingPage">
+                    <div class="landingPadButton" id="mapsButton">
+                        <text onclick="showMaps()">See Maps</text>
+                    </div>
+                    <div class="landingPadButton" id="keysButton">
+                        <text onclick="showKeys()">See Keys</text>
+                    </div>
+                    <div class="landingPadButton" id="dealersButton">
+                        <text onclick="showDealers()">See Dealers</text></div>
+                    <div class="landingPadButton" id="questsButton">
+                        <text onclick="showQuests()">See Quests</text></div>
+                    <div class="landingPadButton" id="ammoButton">
+                        <text onclick="showAmmo()">See Ammo</text></div>
+                    <div class="landingPadButton" id="itemsButton"><text onclick="showItems()">See Items</text></div>
+                </div>
+                <div id="mapPage">
+                    <div id="mapSelector" onchange="getMap()">
+                        <select id="mapSelection" onclick="chooseMap()">
+                            <option value="customs">Customs</option>
+                            <option value="factory">Factory</option>
+                            <option value="labs">Labs</option>
+                            <option value="interchange">Interchange</option>
+                            <option value="shoreline">Shoreline</option>
+                            <option value="woods">Woods</option>
+                        </select>
+                    </div>
+                    <div id="actualMap">
+                        <img id="customsMap" src="assets/images/customs.jpg" height="700px" width="1400px"/>
+                        <img id="factoryMap" src="assets/images/factory1.png" height="700px" width="1400px" />
+                        <img id="factoryMap2" src="assets/images/factory2.png" height="700px" width="1400px" />
+                        <img id="interchangeMap" src="assets/images/interchange.jpg" height="700px" width="1400px" />
+                        <img id="labsMap" src="assets/images/labs.png" height="700px" width="1400px" />
+                        <img id="shorelineMap" src="assets/images/shoreline.jpg" height="700px" width="1400px" />
+                        <img id="woodsMap" src="assets/images/woods.jpg" height="700px" width="1400px" />
+                    </div>
+                    <!-- <div id="mapKey">this means that</div> -->
+                </div>
+                <div id="keyPage">
+                    <iframe id="keysIframe" width="1400" height="700"
+                        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSjwKQ9NnMXkXEUDlzpFEz0fm609XNe8oaHYxYd92C5uaCw4Bf5a4VC5VwU4RHI7Xcbxq__UEvyBcgz/pubhtml?widget=true&amp;headers=false"></iframe>
+                </div>
+                <div id="myKeys">
+                    <!-- Input checklist of keys, save the data locally to keep the data after refresh -->
+                    
+                </div>
+                <div id="dealersPage">
+                    <div id="vendorSelect" onchange="vendorSelect()" style="align-content: center; text-align:center;">
+                        <select id="vendorSelection">
+                            <option value="prapor">Prapor</option>
+                            <option value="therapist">Therapist</option>
+                            <option value="skier">Skier</option>
+                            <option value="fence">Fence</option>
+                            <option value="mechanic">Mechanic</option>
+                            <option value="peacekeeper">Peacekeeper</option>
+                            <option value="ragman">Ragman</option>
+                        </select>
+                    </div>
+                    <div id="vendorPicture"><img src="assets/images/prapor.jpeg" /></div>
+                    <div id="vendor">
+                        <div id="lvlHeader">Merchant Tier</div>
+                        <div id="reqHeader">Requirements</div>
+                        <div id="lvl1">1</div>
+                        <div id="lvl1reqs">None</div>
+                        <div id="lvl2">2</div>
+                        <div id="lvl2reqs">Level 15 | 1,000,000&#8381; Spent</div>
+                        <div id="lvl3">3</div>
+                        <div id="lvl3reqs">Level 22 | 1,500,000&#8381; Spent</div>
+                        <div id="lvl4">4</div>
+                        <div id="lvl4reqs">Level 33 | 2,300,000&#8381; Spent</div>
+                        <div id="bestPrices">
+                            Things to sell to him:
+                            <ul>
+                                <li>Weapons (Be sure to break them down first)</li>
+                                <li>Ammo</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="questsPage">
+                <div id="vendorQuestPics">
+                    <img id="prapQuestPic" src="assets/images/prapor.jpeg" />
+                    <img id="therQuestPic" src="assets/images/therapist.jpeg" />
+                    <img id="skierQuestPic" src="assets/images/skier.jpeg" />
+                    <img id="mechanicQuestPic" src="assets/images/mechanic.jpeg" />
+                    <img id="ragmanQuestPic" src="assets/images/ragman.jpeg" />
+                    <img id="peaceQuestPic" src="assets/images/peacekeeper.jpeg" />
+                    <img id="fenceQuestPic" src="assets/images/fence.png" />
+                </div>
+                    <div id="vendorQuestSelection">
+                        <select id="vendorQuestSelector" onchange="questSelection()">
+                            <option value="prapor">Prapor</option>
+                            <option value="therapist">Therapist</option>
+                            <option value="skier">Skier</option>
+                            <option value="mechanic">Mechanic</option>
+                            <option value="peacekeeper">Peacekeeper</option>
+                            <option value="ragman">Ragman</option>
+                        </select>
+                    </div>
+                    <div id="questTable">
+                        <table style="width:100%" id="prapQuestTable" border=1 frame=void rules=rows>
+                            <tr id="prapHeaders">
+                                <th>Quest Name</th>
+                                <th>Steps to Complete</th>
+                                <th>Items You'll Need</th>
+                                <th>Rewards</th>
+                                <th>Relevant Links</th>
+                            </tr>
+                            <tr id="prapRow1">
+                                <td>Debut</td>
+                                <td><ul><li>Kill 3 Scavs on Customs Map</li><li>Find three MR-133 Shotguns</li><li>Hand Over the Shotguns</li></ul></td>
+                                <td>3 MR-133 shotguns. Be sure to remove all weapon extras as he'll take just the base gun, and you can sell off all attachments.</td>
+                                <td><ul><li>850 EXP</li><li>Prapor Rep + 0.08</li><li>PM Pistol</li><li>3x 8-round mags for PM Pistol</li><li>5,000 Rubles</li><li>Unlocks Purchase of Kalashnikov AKS-74U at LL1</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="prapRow2">
+                                <td>Checking</td>
+                                <td><ul><li>Find the Bronze Pocketwatch on in the Customs Construction Site Truck</li><li>Hand over the pocket watch</li></ul></td>
+                                <td>Machinery Key</td>
+                                <td><ul><li>1000 EXP</li><li>Prapor Rep +0.05</li><li>4,000 Rubles</li><li>TT Pistol</li><li>3x TT Mags</li></ul></td>
+                                <td><a href="https://www.youtube.com/watch?v=MfOw7vq64Mc">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="prapRow3">
+                                <td>Shootout Picnic</td>
+                                <td><ul><li>Kill 14 Scavs on Woods</li></ul></td>
+                                <td>none</td>
+                                <td><ul><li>3100 EXP</li> <li>Prapor Rep +0.11</li><li>6,000 Rubles</li><li>AKS 74U</li><li>3x 30-Round AK Mags</li></ul></td>
+                                <td>none</td>
+                            </tr>
+                            <tr id="prapRow4">
+                                <td>Delivery From the Past</td>
+                                <td><ul><li>Fint the Secure Case in Tarcone Director's Office. (second floor of Big Red warehouse on Customs)</li><li>Survive the Raid</li><li>Hand over Secure Case to Prapor</li></ul></td>
+                                <td>Director's Office Key</td>
+                                <td><ul><li>6000 EXP</li><li>Prapor Rep +0.1</li><li>12,000 Rubles</li><li>Saiga 12g Shotgun</li><li>3x 5-round Saiga Mags</li><li>Unlocks purchas of 5.45x39 PS ammo</li></ul></td>
+                                <td><a href="https://www.youtube.com/watch?v=03zcFK7qWvQ">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="prapRow5">
+                                <td>BP Depot</td>
+                                <td>Mark the Fuel tanks on Customs: <ul><li>One between Big Red and Trailer Park</li><li>One at Old Gas Station</li><li>One at New Gas Station</li><li>One in Construction Yard</li></ul></td>
+                                <td>4 Beacons (more if you die after planting some. You'll need to plant all 4 in a single raid and survive.</td>
+                                <td><ul><li>4000 EXP</li><li>Prapor Rep +0.8</li><li>8,000 Rubles</li><li>3x RGD-5 Grenades</li></ul></td>
+                                <td><a href="https://www.youtube.com/watch?v=km1QlbjhFIQ">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="prapRow6">
+                                <td>Bad Rep Evidence</td>
+                                <td><ul><li>Find the Secure Folder 0031 in a bunkhouse at Customs. This is located in the upper foreman's trailer in the construction zone of Customs</li></ul></td>
+                                <td>Key to portable cabin trailer on Customs Construction Zone</td>
+                                <td><ul><li>6200 EXP</li><li>Prapor Rep +0.1</li><li>16,000 Rubles</li><li>PP-9 Klin SMG</li><li>3x 30-round Klin Mags</li><li>Unlocks purchase of PSO 1M2-1 4x24 Scoper</li></ul></td>
+                                <td><a href="https://www.youtube.com/watch?v=rXS08ZfJx80">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="prapRow7">
+                                <td>Ice Cream Cones</td>
+                                <td><ul><li>Find and Turn in 6 60-Round Mags for AK</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>7400 EXP</li><li>Prapor Rep +0.08</li><li>3x 60-round mags for AK-74 and compatible</li><li>17,000 Rubles</li><li>100 5.45x39 BP rounds</li><li>Unlocks barter for 60-round 6L31 Mags for AK-74 and compatible at LL2</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="prapRow8">
+                                <td>Postman Pat - Part 1</td>
+                                <td><ul><li>Find the letter on a messenger in the Factory</li><li>Survive and Exit the Factory</li><li>Hand over letter to Therapist</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>8000 EXP</li><li>Prapor Rep +0.08</li><li>19,000 Rubles</li><li>Flyye MBSS Backpack</li></ul></td>
+                                <td><a href="https://www.youtube.com/watch?v=t7mXtbgPreE">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="prapRow9">
+                                <td>Shaking Up Teller</td>
+                                <td><ul><li>Find something Valuable in Dorm Room 203</li><li>Hand over the item to Prapor</li></ul></td>
+                                <td>Room 203 Key or Room 214 Key</td>
+                                <td><ul><li>8300 EXP</li><li>Prapor Rep +0.08</li><li>22,000 Rubles</li><li>Unlocks purchas of PBS-4 5.45x39 Silencer at LL3</li><li>Unlocks purchas of Hexagon 12k Sound Suppressor at LL2</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="prapRow10">
+                                <td>The Punisher - Part 1</td>
+                                <td><ul><li>Kill 20 Scavs at Shoreline</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>14,000 EXP</li><li>Prapor Rep +0.08</li><li>40,000 Rubles</li><li>6B43 6A Armor</li><li>Unlocks purchase of SV-98 bolt-action Sniper Rifle at LL3</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="prapRow11">
+                                <td>The Punisher - Part 2</td>
+                                <td><ul><li>Kill 20 Scavs at Shoreline</li><li>Collect 10 Lower half-masks</li><li>Deliver the Masks to Prapor</li></ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>20,000 EXP</li>
+                                        <li>Prapor Rep +0.1</li>
+                                        <li>70,000 Rubles</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="prapRow12">
+                                <td>The Punisher - Part 3</td>
+                                <td><ul><li>Kill 35 Scavs at Customs</li></ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>16,000 EXP</li>
+                                        <li>Prapor Rep +0.08</li>
+                                        <li>Skier Rep +0.05</li>
+                                        <li>2,500 USD</li>
+                                        <li>DVL-10 Saboteur Sniper Rifle</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="prapRow13">
+                                <td>The Punisher - Part 4</td>
+                                <td><ul><li>Kill 20 Scavs in Woods</li><li>Kill 20 PMCs on Shoreline</li><li>Find 10 Bars A-2607 Knives</li><li>Handover Knives to Prapor</li></ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>29,000 EXP</li>
+                                        <li>Prapor Rep +0.12</li>
+                                        <li>Colt M1A 5.56x45 Assault Rifle</li>
+                                        <li>100,000 Rubles</li>
+                                        <li>Unlocks purchase of 5.45x39 BT at LL3</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="prapRow14">
+                                <td>The Punisher - Part 5</td>
+                                <td><ul><li>Find 5 AK-74N Rifles</li><li>Turn in Rifles to Prapor (remember to strip the guns)</li><li>Find 3 M1A Assault Rifles</li><li>Turn in M1As to Prapor (remember to strip the guns) </li><li>Find 10 PM Pistols</li><li>Turn in the Pistols to Prapor (remember to strip the guns)</li></ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>29,000 EXP</li>
+                                        <li>Prapor Rep +0.12</li>
+                                        <li>5,000 USD</li>
+                                        <li>Pistol Case</li>
+                                        <li>Documents Case</li>
+                                        <li>Unlocks Purchase of 7.62x39 BP at LL3</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="prapRow15">
+                                <td>The Punisher - Part 6</td>
+                                <td><ul><li>Kill 30 PMCs</li><li>Bring 15 BEAR dogtags Level 20+</li><li>Bring 15 USEC dogtags Level 20+</li><li>Hand Over Dogtags to Prapor</li></ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>30,000 EXP</li>
+                                        <li>Prapor Rep +0.12</li>
+                                        <li>Skier Rep +0.06</li>
+                                        <li>Therapist Rep +0.15</li>
+                                        <li>250,000 Rubles</li>
+                                        <li>Secure Container Epsilon</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="prapRow16">
+                                <td>Polikhim Hobo</td>
+                                <td><ul><li>Kill 30 Scavs at Customs</li></ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>10,400 EXP</li>
+                                        <li>Prapor Rep +0.1</li>
+                                        <li>17,000 Rubles</li>
+                                        <li>4x F-1 Hand Grenades</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="prapRow17">
+                                <td>Big Customer</td>
+                                <td><ul><li>Find the Transport with the Chemical</li><li>Mark the Chemical transport with a beacon</li><li>Survive and exit Customs</li></ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>12,000 EXP</li>
+                                        <li>Prapor Rep +0.1</li>
+                                        <li>200,000 Rubles</li>
+                                        <li>PACA Soft Armor</li>
+                                    </ul>
+                                </td>
+                                <td><a href="https://www.youtube.com/watch?v=lllr3jlIXd8">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="prapRow18">
+                                <td>No Offence</td>
+                                <td>
+                                    <ul>
+                                        <li>Find 10 M67 Hand Grenades</li>
+                                        <li>Hand the Grenades over to Prapor</li>
+                                    </ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>Prapor Rep +0.4</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    None
+                                </td>
+                            </tr>
+                            <tr id="prapRow19">
+                                <td>Grenadier</td>
+                                <td>
+                                    <ul>
+                                        <li>Kill 12 PMCs with Grenades</li>
+                                    </ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>24,000 EXP</li>
+                                        <li>50,000 Rubles</li>
+                                        <li>7x F-1 Hand Grenades</li>
+                                        <li>240x 5.45x39 BT ammo</li>
+                                        <li>Unlocks barter for 8pc Pack of 9x39 7N12 BP Ammo at LL4</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    None
+                                </td>
+                            </tr>
+                            <tr id="prapRow20">
+                                <td>Perfect Mediator</td>
+                                <td>
+                                    <ul>
+                                        <li>Reach 4th level standing with Ragman</li>
+                                        <li>Reach 4th level standing with Skier</li>
+                                        <li>Reach 4th level standing with Mechanic</li>
+                                        <li>Reach 4th level standing with Peacekeeper</li>
+                                        <li>Reach 4th level standing with Prapor</li>
+                                        <li>Reach 4th level standing with Therapist</li>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>19,000 EXP</li>
+                                        <li>Prapor Rep +0.9</li>
+                                        <li>55,000 Rubles</li>
+                                        <li>THICC Weapon Case</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    None
+                                </td>
+                            </tr>
+                            <tr id="prapRow21">
+                                <td>Insomnia</td>
+                                <td>
+                                    <ul>
+                                        <li>Kill 30 PMCs during Nighttime (2300-0400 in-game time)</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>24,000 EXP</li>
+                                        <li>85,000 Rubles</li>
+                                        <li>3x PNV-10T Night Vision</li>
+                                        <li>3x 2P Klesch Flashlight+Laser Designator</li>
+                                        <li>Unlocks barter for 8pc Pack of 9x39 7N12 BP Ammo at LL4</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    None
+                                </td>
+                            </tr>
+                            <tr id="prapRow22">
+                                <td>Test Drive - Part 1</td>
+                                <td>
+                                    <ul>
+                                        <li>Kill 20 PMCs using M1A equipped with a Hybrid 46 silencer and Trijicon REAP-IP Thermal Scope</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>35,000 EXP</li>
+                                        <li>300,000 Rubles</li>
+                                        <li>Prapor Rep +0.12</li>
+                                        <li>2x RPK-16 5.45x39 Light Machine Gun</li>
+                                        <li>6x 95-Round 5.45x39 mag for RPK-16 and compatible</li>
+                                        <li>5x golden neck chains</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    None
+                                </td>
+                            </tr>
+                        </table>
+                        <table id="therapistQuestTable" style="width:100%">
+                            <tr id="therHeaders">
+                                <th>Quest Name</th>
+                                <th>Steps to Complete</th>
+                                <th>Items You'll Need</th>
+                                <th>Rewards</th>
+                                <th>Relevant Links</th>
+                            </tr>
+                            <tr id="therRow1">
+                                <td>Shortage</td>
+                                <td><ul><li>Hand over 5 Salewa Kits</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>800 EXP</li><li>Therapist Rep +0.07</li><li>10,000 Rubles</li><li>4x Analgin Pain Killers</li><li>4x AI-2 Medkits</li><li>4x Immobilizing Splint</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="therRow2">
+                                <td>Sanitary Standards - Part 1</td>
+                                <td><ul><li>Hand over a Gas Analyzer</li></ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>3100 EXP</li>
+                                        <li>Therapist Rep +0.09</li>
+                                        <li>14,000 Rubles</li>
+                                        <li>2x Car First Aid Kits</li>
+                                        <li>Unlocks Purchase of Car First Aid Kits at LL1</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="therRow3">
+                                <td>Sanitary Standards - Part 2</td>
+                                <td><ul><li>Hand over 3 Gas Analyzers</li></ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>6300 EXP</li>
+                                        <li>Therapist Rep +0.09</li>
+                                        <li>18,000 Rubles</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="therRow4">
+                                <td>Operation Aquarius - Part 1</td>
+                                <td><ul><li>Find the hidden water in the Dorm (Room ###)</li><li>Survive and Exit the raid</li></ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>4800 EXP</li>
+                                        <li>Therapist Rep +0.09</li>
+                                        <li>Skier Rep -0.08</li>
+                                        <li>14,000 Rubles</li>
+                                        <li>8x 0.6L Water Bottle</li>
+                                    </ul>
+                                </td>
+                                <td><a href="https://www.youtube.com/watch?v=ZZJIdH2pH0o">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="therRow5">
+                                <td>Operation Aquarius - Part 2</td>
+                                <td><ul><li>Eliminate 15 Scavs at Customs</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>4800 EXP</li><li>Therapist Rep +0.09</li><li>Skier Rep -0.08</li><li>15,000 Rubles</li><li>3x Army Bandage</li><li>Unlocks purchase of Army Bandage at LL2</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="therRow6">
+                                <td>Painkiller</td>
+                                <td><ul><li>Turn in 10 Morphine Syringes to Therapist</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>6500 EXP</li><li>Therapist Rep +0.09</li><li>17,000 Rubles</li><li>10x Analgin Painkillers</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="therRow7">
+                                <td>Pharmacist</td>
+                                <td><ul><li>Find the Case with the Device</li>><li>Find the Paramedic's Car (Optional)</li><li>Get into dorm room 114 (Optional)</li><li>Hand over the case to Therapist</li></ul></td>
+                                <td>Room 114 Key (Found in Blue Jacket in trunk of car at Military Checkpoint on Customs.</td>
+                                <td><ul><li>8100 EXP</li><li>Therapist Rep +0.9</li><li>25,000 Rubles</li><li>4x IFAK Personal Tactical First Aid Kits</li><li>Unlocks Barter for 6B47 Helmet camouflages at Ragman LL2</li></ul></td>
+                                <td><a href="https://www.youtube.com/watch?v=o0wB4pZHbkk">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="therRow8">
+                                <td>Supply Plans</td>
+                                <td><ul><li>Find the secure folder at the Sawmill on Woods.</li><li>The folder is located under the bed in the cabin labeled '3'.</li><li>Survive and exit the raid</li><li>Hand over the case to Therapist</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>10700 EXP</li><li>Therapist Rep +0.09</li><li>70,000 Rubles</li></ul></td>
+                                <td><a href="https://www.youtube.com/watch?v=sZMoQNWLtFY">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="therRow9">
+                                <td>General Wares</td>
+                                <td><ul><li>Find and turn in 30 cans of Tushonka to Therapis</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>6000 EXP</li><li>Therapist Rep +0.07</li><li>4x Can of Pacific Saury</li><li>2x Iskra Lunch Box</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="therRow10">
+                                <td>Car Repair</td>
+                                <td><ul><li>Find and turn in 8 Spark Plugs</li><li>Find and turn in 4 Car Batteries</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>11,000 EXP</li><li>Therapist Rep +0.08</li><li>1500 USD</li><li>2x Grizzly First Aid Kit</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="therRow11">
+                                <td>Health Care - Part 1</td>
+                                <td><ul><li>Mark the 1st Ambulance</li><li>Mark the 2nd Ambulance</li><li>Mark the 3rd Ambulance</li><li>Survive and Exit the raid</li></ul></td>
+                                <td>Beacons to Mark Ambulances</td>
+                                <td><ul><li>8300 EXP</li><li>Therapist Rep +0.07</li><li>22,000 Rubles</li><li>2x IFAK Personal Tactical First Aid Kits</li><li>Unlocks purchase of IFAK Tactical First Aid Kits at LL3</li></ul></td>
+                                <td><a href="https://www.youtube.com/watch?v=rN7MPx4blYk">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="therRow12">
+                                <td>Heath Care - Part 2</td>
+                                <td><ul><li>Gather Info on the fate of Terragroup Research</li><li>Survive and Exit the Raid</li><li>Turn in the Info to Therapist</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>11,500 EXP</li><li>Therapist Rep +0.09</li><li>24,000 Rubles</li><li>4x Salewa First Aid Kits</li></ul></td>
+                                <td><a href="https://www.youtube.com/watch?v=Gcfyr48NmVU">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="therRow13">
+                                <td>Heath Care - Part 3</td>
+                                <td><ul><li>Find the Car that belonged to the head of the Medical Service</li><li>Pick up the blood sample</li><li>Hand over the blood sample</li><li>Survive and exit the raid</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>12,500 EXP</li><li>Therapist Rep +0.09</li><li>26,000 Roubles</li><li>2x Morphine Injectors</li><li>Unlocks the purchase of Morphine Injector at LL4</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="therRow14">
+                                <td>Health Care - Part 4</td>
+                                <td><ul><li>Raise your Health Skill to 7</li><li>You can view your character's stats by going to your character screen and selecting overall</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>13,500 EXP</li><li>Therapist Rep 0.09</li><li>29,000 Roubles</li><li>2x Grizzly First Aid kits</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="therRow15">
+                                <td>Health Care - Part 5</td>
+                                <td><ul><li>Locate the drop spot in the nighttime in Factory</li><li>Obtain 3 packs of Gunpowder and leave them in the designated spot</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>18,700 EXP</li><li>Therapist Rep +0.1</li><li>35,000 Roubles</li><li>Meds Case</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="therRow16">
+                                <td>Postman Pat - Part 2</td>
+                                <td>Hand over the letter from messenger to the Therapist</td>
+                                <td>None</td>
+                                <td><ul><li>5,200 EXP</li><li>Therapist Rep +0.06</li><li>5,000 Roubles</li><li>Unlocks purchase of Salewa First Aid Kit at LL2</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="therRow17">
+                                <td>Out of Curiosity</td>
+                                <td><ul><li>Find a transport with the chemical</li><li>Mark the chemical transport with a beacon</li><li>Survive and exit Customs</li></ul></td>
+                                <td>Beacon to mark chemical transport</td>
+                                <td><ul><li>12,000 EXP</li><li>Therapist Rep +0.3</li><li>170,000 Roubles</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="therRow18">
+                                <td>Trust Regain</td>
+                                <td><ul><li>Find the Dorm room 303 key and hand it over to Therapist</li><li>Find the ZB-014 key and hand it over to Therapist</li><li>Find the Customs Military Checkpoint key and hand it over to Therapist</li><li>Find the Gas Station Closet key and hand it over to Therapist</li></ul></td>
+                                <td><ul><li>303 Key</li><li>ZB-014 Key</li><li>Checkpoint Key</li><li>Gas Station Closet Key</li></ul></td>
+                                <td><ul>
+                                    <li>Therapist Rep +0.3</li>
+                                </ul></td>
+                                <td><ul><li><a href="">303 Key Guide</a></li><li><a href="">ZB-014 Key Guide</a></li><li><a href="">Military Checkpoint Key Guide</a></li><li><a href="">Gas Station Closet Key Guide</a></li></ul></td>
+                            </tr>
+                            <tr id="therRow19">
+                                <td>Hippocratic Vow</td>
+                                <td><ul><li>Handover $5000</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>Therapist Rep +0.2</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="therRow20">
+                                <td>Private Clinic</td>
+                                <td><ul><li>Find and handover 5 Ophthalmoscopes</li><li>Find and handover 3 LEDX Skin Transilluminators</li></ul></td>
+                                <td></td>
+                                <td><ul><li>45,000 EXP</li><li>130,000 Roubles</li><li>Therapist Rep +0.11</li><li>1x THICC Items Case</li><li>West Wing 306 Key</li></ul></td>
+                                <td><ul><li><a href="">Opthalmoscopes Guide</a></li><li><a href="">LEDX Guide</a></li></ul></td>
+                            </tr>
+                            <tr id="therRow21">
+                                <td>Athlete</td>
+                                <td><ul><li>Raise your Health Skill to 12</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>30,000 EXP</li><li>Therapist +0.11</li><li>110,000 Roubles</li><li>3x Hemostatic drug Zagustin</li><li>3x Adrenaline Injector</li><li>Unlocks purchase of Arenaline Injector at LL4</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="therRow22">
+                                <td>Decontamination Service</td>
+                                <td><ul><li>Kill 30 scavs on Interchange, at a distance of less than 60 meters.</li><li>Must be wearing a respirator and module 3M armor</li></ul></td>
+                                <td><ul><li>Respirator</li><li>Module 3M Armor</li></ul></td>
+                                <td><ul><li>30,000 EXP</li><li>300,000 Roubles</li><li>Therapist Rep +0.11</li><li>3x Morphine Injector</li><li>3x IFAC personal tactical first aid kit</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                        </table>
+                        <table id="skierQuestTable" style="width:100%">
+                            <tr id="skierHeaders">
+                                <th>Quest Name</th>
+                                <th>Steps to Complete</th>
+                                <th>Items You'll Need</th>
+                                <th>Rewards</th>
+                                <th>Relevant Links</th>
+                            </tr>
+                            <tr id="skierRow1">
+                                <td>Supplier</td>
+                                <td><ul><li>Find and hand over 5 pieces Module 3M armor with durability over 70% (you can repair armor to meet this requirement)</li><li>Find and handover 5 TOZ-106 Shotguns (remember to strip the guns before handing them over)</li></ul></td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>5000 EXP</li>
+                                        <li>Therapist Rep +0.12</li>
+                                        <li>60,000 Rubles</li>
+                                        <li>Unlocks purchase of Saiga-9 9x19 Carbine at LL1</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="skierRow2">
+                                <td>The Extortionist</td>
+                                <td><ul><li>Find the Hidden Valuable Cargo</li><li>Hand it Over to Skier</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>4,000 EXP</li><li>Skier Rep +0.08</li><li>500 Dollars</li><li>Vepr AKM/VPO-209 366TKM Carbine</li><li>3x Izhmash 30-Round AK Mags</li></ul></td>
+                                <td>
+                                    <ul><a href="">Youtube Walkthrough</a></ul>
+                                </td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="skierRow3">
+                                <td>Stirrup</td>
+                                <td>Eliminate 12 PMCs</td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>7000 EXP</li>
+                                        <li>Skier Rep +0.12</li>
+                                        <li>Prapor Rep -0.12</li>
+                                        <li>Therapist Rep -0.05</li>
+                                        <li>65,000 Rubles</li>
+                                        <li>Camelbak Tri-Zip Backpack</li>
+                                        <li>Unlocks purchase of Vepr AKM/VPO-209 366TKM Carbine</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="skierRow4">
+                                <td>What's on the Flash Drive?</td>
+                                <td>
+                                    <ul>
+                                        <li>Find and handover 2 USB flash Drives with Information</li>
+                                    </ul>
+                                </td>
+                                <td>None</td>
+                                <td>
+                                    <ul>
+                                        <li>6000 EXP</li>
+                                        <li>Skier Rep +0.1</li>
+                                        <li>30,000 Rubles</li>
+                                        <li>SKS Rifle</li>
+                                        <li>2x SKS Mags</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    None
+                                </td>
+                            </tr>
+                            <tr id="skierRow5">
+                                <td>Golden Swag</td>
+                                <td><ul><li>Find a Gilded Zibbo Lighter</li><li>Leave the ligher in the bunkhouse in the trailer park on Customs</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>6,400 EXP</li><lil>Skier Rep +0.1</li><li>17,000 Roubles</li><li>AS VAL</li><li>3x 20-Round 6L25 9x39 VSS Mag</li><li>Unlocks purchase of VOMZ Pilad P1X42 Weaver reflex sight at LL2</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="skierRow6">
+                                <td>Chemical - Part 1</td>
+                                <td><ul>
+                                    <li>Find and handover information about the deputy chief's past life</li>
+                                    <li>Find and handover items that can help the investigation</li>
+                                </ul></td>
+                                <td>???</td>
+                                <td><ul><li>6,300 EXP</li><li>Skier Rep 0.08</li><li>PACA Soft Armor</li><li>15,000 Roubles</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="skierRow7">
+                                <td>Chemical - Part 2</td>
+                                <td><ul><li>Find and handover any information that could help with the investigation</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>6,400 EXP</li><li>Skier Rep +0.08</li><li>3x F-1 Hand Grenades</li><li>15,000 Roubles</li><li>Unlocks purchase of SAI-02 10-Round 12x76 Mac for SOK-12 at LL@</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="skierRow8">
+                                <td>Chemical - Part 3</td>
+                                <td><ul><li>Find and handover a Syringe with a chemical in the Factory</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>7,100 EXP</li><li>Skier Rep +0.08</li><li>17,000 Roubles</li><li>2x Zenit PSO 4x24 Scopes</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="skierRow9">
+                                <td>Chemical - Part 4</td>
+                                <td><ul><li>Find a transport with the chemical on Customs</li><li>Mark the chemical transport with a beacon</li><li>Survive and Extract from Customs</li></ul></td>
+                                <td>Beacon</td>
+                                <td><ul><li>9,000 EXP</li><li>Skier Rep +0.01</li><li>75,000 Roubles</li><li>Unlocks purchase of ZSh-1-2M Helmet (black) from Ragman LL3</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="skierRow10">
+                                <td>Loyalty Buyout</td>
+                                <td><ul><li>Give 1 million roubles to Skier</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>Skier Rep +0.3</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="skierRow11">
+                                <td>Friend from the West - Part 1</td>
+                                <td><ul><li>Kill 5 USEC PMCs</li><li>Find and handover 2 Flyye MBSS Backpacks</li><li>Find and handover 4 AVS rigs</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>17,000 EXP</li><li>Skier Rep +0.14</li><li>700 USD</li><li>Colt M1A 5.56x45 Assault Rifle</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="skierRow12">
+                                <td>Friend from the West - Part 2</td>
+                                <td>Hand over $5000</td>
+                                <td>None</td>
+                                <td><ul><li>13,000 EXP</li><li>Skier Rep +0.12</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="skierRow13">
+                                <td>Vitamins - Part 1</td>
+                                <td><ul><li>Get and handover the first chemical container</li><li>Get and handover the second chemical container</li><li>Get and handover the third chemical container</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>19,000 EXP</li><li>Skier Rep +0.1</li><li>37,000 Roubles</li><li>3x Holosun HS401G5 reflex sight</li></ul></td>
+                                <td></td>
+                            </tr>
+                            <tr id="skierRow14">
+                                <td>Vitamins - Part 2</td>
+                                <td><ul><li>Find and handover 5 respirators</li><li>Find and handover 5 Medical bloodsets</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>24,000 EXP</li><li>Skier Rep +0.12</li><li>40,000 Roubles</li><li>5x Morphine Injector</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="skierRow15">
+                                <td>Land Lease - Part 1</td>
+                                <td><ul><li>Get and handover the first Motor controller</li><li>Get and handover the second motor controller</li><li>Get and handover the third motor controller</li><li>Get and handover the first Single-Axis Fiber Optic Gyroscope</li><li>Gen and handover the second Single-Axis Fiboer Optic Gyroscope</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>28,500 EXP</li><li>Skier Rep +0.12</li><li>3,500 USD</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="skierRow16">
+                                <td>Informed means Armed</td>
+                                <td><ul><li>Install Wifi camera to watch the pier</li><li>Install Wifi Camera to watch the road to port</li><li>Install the wifi camera to watch Kiba Arms store</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>21,000 EXP</li><li>Skier Rep +0.1</li><li>45,000 Roubles</li><li>2x Fab Defense UAS for AK</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="skierRow17">
+                                <td>Chumming</td>
+                                <td><ul><li>Drop 3 gold chains under the mattress next to BTR-80A</li><li>Drop 3 gold chains in the microwave on the 3rd floor of dorms</li><li>Drop 3 gold chains in the #2 cabin on Woods</li></ul></td>
+                                <td>9 Gold Chains</td>
+                                <td><ul><li>30,000 EXP</li><li>Skier Rep +0.12</li><li>65,000 Roubles</li><li>Roler submariner gold watch</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="skierRow18">
+                                <td>Kind of Sabotage</td>
+                                <td><ul><li>Hand over the 0052 folder from the Therapist quest to Skier</li><li>The folder can be found under the bed in the #3 cabin on Woods</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>5,400 EXP</li><li>Skier Rep +0.3</li><li>180,000 Roubles</li></ul></td>
+                                <td></td>
+                            </tr>
+                            <tr id="skierRow19">
+                                <td>Silent Caliber</td>
+                                <td><ul><li>Kill 20 Scavs with a suppressed 12 gauge shotgun</li><li>Kill 10 PMCs with a suppressed 12 gauge shotgun</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>20,000 EXP</li><li>Skier Rep +0.09</li><li>100,000 Roubles</li><li>DVL-10 Saboteur sniper rifle</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="skierRow20">
+                                <td>Flint</td>
+                                <td><ul><li>Raise your Stress Resistance Skill to 18</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>32,000 EXP</li><li>Skier Rep +0.08</li><li>150,000 Roubles</li><li>Unlocs barter for M-2 Tactical Sword at LL4</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="skierRow21">
+                                <td>Bullshit</td>
+                                <td><ul><li>Find the False flash Drive</li><li>Put the False flash drive in dorms 3rd floor in the pile of trash opposite the stairs</li><li>Put an SV-98 in the same location</li><li>Put a roler watch in the same location</li><li>Do not kill Scavs on Customs until the quest is completed</li></ul></td>
+                                <td><ul><li>False Flash Drive</li><li>SV-98 Sniper Rifle</li><li>Roler watch</li></ul></td>
+                                <td><ul><li>35,000 EXP</li><li>Skier Rep +0.07</li><li>120,000 Roubles</li><li>Unlocks barter for 5pcs 12x70 DIPP ammo box at LL3</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="skierRow22">
+                                <td>Setup</td>
+                                <td><ul><li>Kill 15 PMCs at Customs</li><li>Must be wearing </li></ul></td>
+                                <td><ul>Must be done using:<br> <li> a MR-133 or MP-153</li><li>Ushanka ear-flap cap</li><li>Scav Vest</li></ul></td>
+                                <td><ul><li>30,000 EXP</li><li>Skier Rep +0.07</li><li>100,000 Roubles</li><li>Unlocs barter for 20 pcs 9x19 DIPP ammo box at LL4</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                        </table>
+                        <table id="peacekeeperQuestTable" style="width:100%">
+                            <tr id="peaceHeaders">
+                                <th>Quest Name</th>
+                                <th>Steps to Complete</th>
+                                <th>Items You'll Need</th>
+                                <th>Rewards</th>
+                                <th>Relevant Links</th>
+                            </tr>
+                            <tr id="peaceRow1">
+                                <td>Fishing Gear</td>
+                                <td><ul><li>Find the Secret spot</li><li>Leave sniper rifle in place</li><li>Leave multitool in place</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>8,800 EXP</li><li>Peacekeeper Rep +0.06</li><li>800 USD</li><li>Kiver-M Helmet</li><li>Unlocks purchase of Aimpoint Micro T-1 reflex sight</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>                            
+                            </tr>
+                            <tr id="peaceRow2">
+                                <td>Tigr Safari</td>
+                                <td><ul><li>Mark the First Tigr vehicle</li><li>Mark the Second Tigr vehicle</li><li>Mark the Third Tigr vehicle</li></ul></td>
+                                <td>3x Beacons</td>
+                                <td><ul><li>9,300 EXP</li><li>Peacekeeper Rep +0.07</li><li>900 USD</li><li>ANA Tactical Alpha chest rig</li><li>2x 60-Round MAG5-60 5.56x45 STANAG Mag</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow3">
+                                <td>Scrap Metal</td>
+                                <td><ul><li>Mark the first T-90 tank</li><li>Mark the second T-90 tank</li><li>Mark the third T-90 tank</li></ul></td>
+                                <td>3x Beacons</td>
+                                <td><ul><li>10,100 EXP</li><li>Peacekeeper Rep +0.07</li><li>850 USD</li><li>2x AKM 7.62x39 Assault Rifles</li><li>200x 7.62x39 PS ammo</li><li>Unlocks purchase of HK MP5 9x19 SMG (Navy 3-round burst)</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow4">
+                                <td>Eagle Eye</td>
+                                <td><ul><li>Find the First UAV crash site</li><li>Find SAS disk at the drone</li><li>Find the second UAV crash site</li><li>Retrieve the SAS disk from the second drone</li><li>Hand over the disks to peacekeeper</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>10,200 EXP</li><li>Peacekeeper Rep +0.07</li><l>900 USD</li><li>Leupold Mark 4 HAMR 4x24mm Scope</li><li>ELCAN SpecterDR 1x/4x Scoper FDE</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow5">
+                                <td>Humanitarian Supplies</td>
+                                <td><ul><li>Mark the first truck with lost UN cargo</li><li>Mark the second truck with lost UN cargo</li><li>Deliver 5 MRE ration packs to peacekeeper</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>10,300 EXP</li><li>Peacekeeper +0.07</li><li>800 USD</li><li>Unlock purchase of Hexagon AK-74 5.45x39 Sound Suppressor at Skier LL2</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow6">
+                                <td>The Cult - Part 1</td>
+                                <td><ul><li>Find the missing informant</li><li>Survive and leave the area</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>8,800 EXP</li><li>Peacekeeper Rep +0.06</li><li>700 USD</li><li>3x Golden neck chain</li><li>Unlocks purchase of 5.56x45 M856A1 at LL2</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow7">
+                                <td>The Cult - Part 2</td>
+                                <td><ul><li>Put the beacon on the ritual spot at Customs</li><li>Put the beacon on the ritual spot on Woods</li><li>Put the beacon on the ritual spot on Shoreline</li></ul></td>
+                                <td>3x beacons</td>
+                                <td><ul><li>11,400 EXP</li><li>Peacekeeper Rep +0.07</li><li>850 USD</li><li>3x Gas Analyzer</li><li>3x Geiger-Muller Counter</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow8">
+                                <td>Spa Tour - Part 1</td>
+                                <td><ul><li>Kill 20 Scavs on Shoreline</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>12,300 EXP</li><li>Peacekeeper Rep +0.07</li><li>950 USD</li><li>SIG MPX 9x19 SMG</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="peaceRow9">
+                                <td>Spa Tour - Part 2</td>
+                                <td><ul><li>Mark the helicopter with a beacon</li><li>Mark a safe road with a beacon</li><li>Survive and extract from Area</li></ul></td>
+                                <td>2x Beacon</td>
+                                <td><ul><li>9,800 EXP</li><li>Peacekeeper Rep +0.06</li><li>900 USD</li><li>Unlocks purchase of M67 Hand Grenade</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow10">
+                                <td>Spa Tour - Part 3</td>
+                                <td><ul><li>Find and handover WD-40 100ml</li><li>Find and handover 3x Clin wiper fluid</li><li>Find and handover 3x Corrugated hose</li><li>Find and handover 3x Ox bleach</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>12,500 EXP</li><li>Peacekeeper Rep +0.07</li><li>800 USD</li><li>2x HK MP5 9x19 SMG (Navy 3-Round Burst)</li><li>5x M67 Hand Grenade</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="peaceRow11">
+                                <td>Spa Tour - Part 4</td>
+                                <td><ul><li>Find generators in the right wing</li><li>Find generators in the left wing</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>12,700 EXP</li><li>Peacekeeper Rep +0.07</li><li>1,100 USD</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow12">
+                                <td>Spa Tour - Part 5</td>
+                                <td><ul><li>Find and handover the key from the locked resort rooms</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>10,000 EXP</li><li>Peacekeeper Rep +0.06</li><li>980 USD</li><li>4x IFAK personal tactical first aid kit</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow13">
+                                <td>Spa Tour - Part 6</td>
+                                <td><ul><li>Hand over $7,500</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>16,000 EXP</li><li>Peacekeeper Rep +0.09</li><li>Unlocks purchase of 7.62x51mm M62 at LL2</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="peaceRow14">
+                                <td>Spa Tour - Part 7</td>
+                                <td><ul><li>Find and handove 10 morphine syringes</li><li>find and handover 5 Heat-exchange alkali surface washer</li><li>Find and hand over 5 Corrugated hoses</li><li>Find and handover 2 5L propane tanks</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>16,700 EXP</li><li>Peacekeeper Rep +0.09</li><li>Factory Exit Key</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="peaceRow15">
+                                <td>Cargo X - Part 1</td>
+                                <td><ul><li>Find and handover the cargo record in the computer room</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>14,000 EXP</li><li>Peacekeeper Rep +0.07</li><li>700 USD</li><li>Pistol Case</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow16">
+                                <td>Cargo X - Part 2</td>
+                                <td><ul><li>Find a room with resevoirs</li><li>Find any information on the second part of the shipment</li><li>Handove the info to Peacekeeper</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>11,500 EXP</li><li>Peacekeeper Rep +0.07</li><li>850 USD</li><li>Unlocks purchase of KAC QDSS NT-4 5.56x45 silencer (black) at LL3</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow17">
+                                <td>Cargo X - Part 3</td>
+                                <td><ul><li>Find hidden Terragroup cargo</li><li>Survive and leave the area</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>14,300 EXP</li><li>Peacekeeper Rep +0.07</li><li>900 USD</li><li>HK MP5 9x19 SMG (Navy 3-Round burst)</li><li>3x Standard MP5 30-Round Mag</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow18">
+                                <td>Land Lease - Part 2</td>
+                                <td><ul><li>Find 2 Military COFDM wireless Signal Transmitters</li><li>Find and handover 3 Virtex programmable processors</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>32,000 EXP</li><li>Peacekeeper Rep +0.09</li><li>2000 USD</li><li>2x HK 416A5 5.56x45 Assault Rifles</li><li>300x 5.56x45mm M995</li><li>2x Magpul PMAG D60 60-Round Mag</li><li>2x 60-Round MAG5-60 STANAG Mags</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow19">
+                                <td>Wet Job - Part 1</td>
+                                <td><ul><li>Kill 10 Scavs on Shoreline</li><li>Find and handover 10 PMC dogtags</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>18,500 EXP</li><li>Peacekeeper Rep +0.09</li><li>1,200 USD</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="peaceRow20">
+                                <td>Wet Job - Part 2</td>
+                                <td><ul><li>Find the Fisher's Dwelling</li><li>Set the beacon</li><li>Survive and Exit the raid</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>15,500 EXP</li><li>Peacekeeper Rep +0.07</li><li>1,300 USD</li><li>Unlocks barter for Magpul PMAG 5.56x45 60-Round Mag</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow21">
+                                <td>Wet Job - Part 3</td>
+                                <td><ul><li>Find Artyom's Car</li><li>Survive and exit the raid</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>12,300 EXP</li><li>Peacekeeper Rep +0.06</li><li>1,500 USD</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow22">
+                                <td>Wet Part - Part 4</td>
+                                <td><ul><li>Find a list of resort tenants</li><li>hand over the list of tenants to Peacekeeper</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>12,500 EXP</li><li>Peacekeeper Rep +0.06</li><li>1,600 USD</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow23">
+                                <td>Wet Job - Part 5</td>
+                                <td><ul><li>Find info on Artyom's work</li><li>Hand over the info to Peacekeeper</li></ul></td>
+                                <td>???</td>
+                                <td><ul><li>12,600 EXP</li><li>Peacekeeper Rep +0.06</li><li>1,600 USD</li><li>Unlocks purchase of REmington R11 RSASS at LL4</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="peaceRow24">
+                                <td>Wet Job - Part 6</td>
+                                <td><ul><li>Raise your Sniper Rifle skill to level 7</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>12,700 EXP</li><li>Peacekeeper Rep +0.06</li><li>3,500 USD</li><li>DVL-10 Saboteur sniper rifle</li><li>Unlocks 7.62x51mm M61 at LL4</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="peaceRow25">
+                                <td>The Guide</td>
+                                <td><ul><li>Survive an Interchange raid</li><lil>Survive a Shoreline raid</li><li>Survive a Factory raid</li><li>Survive a Labs raid</li><li>Survive a Woods raid</li><li>Survive a Customs raid</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>100,000 EXP</li><li>Peacekeeper Rep +0.12</li><li>25,000 USD</li><li>Eotech HHS-1 sight</li><li>SLAAP armor plate</li><li>2x Arsenal CWP 30-Round mag for SLR-106</li><li>Unlocks purchase of Eotech HHS-1 sight at LL4</li><li>Unlocks purchase of SLAAP armor plate</li><li>Unlocks purchase of Arsenal CWP 30-Round magazine for SLR-106 at LL2</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                            <tr id="peaceRow26">
+                                <td>Peacekeeping Mission</td>
+                                <td><ul><li>Kill 12 Scavs on Customs dressed in UN uniform</li><li>Kill 12 Scavs on Interchange in UN Uniform</li><li>Kill 12 Scavs on Shoreline dressed in UN uniform</li><li>Kill 12 Scavs on Woods in UN uniform</li><li>Must be wearing UNTAR Helmet, Armor, and using a Colt M4A1</li></ul></td>
+                                <td><ul><li>UNTAR helmet</li><li>MF-UNTAR armor vest</li><li>Colt M4A1</li></ul></td>
+                                <td><ul><li>60,000 EXP</li><li>Peacekeeper Rep +0.12</li><li>Remington Model 700 Sniper Rifle</li><li>150x 7.62x51mm M61 ammo</li><li>2x GPNVG-18 Night Vision</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                        </table>
+                        <table id="mechanicQuestTable" style="width:100%">
+                            <tr id="mechHeaders">
+                                <th>Quest Name</th>
+                                <th>Steps to Complete</th>
+                                <th>Items You'll Need</th>
+                                <th>Rewards</th>
+                                <th>Relevant Links</th>
+                            </tr>
+                            <tr id="mechRow1">
+                                <td>Gunsmith - Part 1</td>
+                                <td><ul><li>Modify MR-133 to comply with required Specification</li></ul></td>
+                                <td><ul><li></li></ul></td>
+                                <td><ul><li>9,700 EXP</li><li>Mechanic Rep +0.04</li><li>20,000 Roubles</li><li>Glock 17 9x19 pistol</li><li>50x 9x19 PST GZH Ammo</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow2">
+                                <td>Gunsmith - Part 2</td>
+                                <td><ul><li>Modify AKS-74U withing the required specifications</li></ul></td>
+                                <td><ul><li></li></ul></td>
+                                <td><ul><li>8,500 EXP</li><li>Mechanic Rep +0.04</li><li>60,000 Roubles</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow3">
+                                <td>Gunsmith - Part 3</td>
+                                <td><ul><li>Modify MP5 to comply with required specifications</li></ul></td>
+                                <td><ul><li></li></ul></td>
+                                <td><ul><li>12,000 EXP</li><li>Mechanic Rep +0.05</li><li>500 Euros</li><li>19-01 Vityaz-SN 9x19 SMG</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow4">
+                                <td>Gunsmith - Part 4</td>
+                                <td><ul><li>Modify M4A1 to comply with the required specifications</li></ul></td>
+                                <td><ul><li></li></ul></td>
+                                <td><ul><li>15,000 EXP</li><li>Mechanic Rep +0.05</li><li>800 Euros</li><li>Physical Bitcoin</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow5">
+                                <td>Gunsmith - Part 5</td>
+                                <td><ul><li>Modify DVL-10 to comply with the required specifications</li></ul></td>
+                                <td><ul><li></li></ul></td>
+                                <td><ul><li>22,000 EXP</li><li>Mechanic Rep +0.06</li><li>200,000 Roubles</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow6">
+                                <td>Gunsmith - Part 6</td>
+                                <td><ul>
+                                    <li>Modify R11 RSASS to comply with the required specifications</li>
+                                </ul></td>
+                                <td></td>
+                                <td><ul><li>24,000 EXP</li><li>Mechanic Rep +0.06</li><li>1,000 Euros</li><li>3x Physical Bitcoin</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow7">
+                                <td>Gunsmith - Part 7</td>
+                                <td><ul>
+                                    <li>Modify Remington Model 870 to comply with the required specifications</li>
+                                </ul></td>
+                                <td></td>
+                                <td><ul><li>25,000 EXP</li><li>Mechanic Rep +0.06</li><li>100,000 Roubles</li><li>Glock 17 9x19 pistol</li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow8">
+                                <td>Gunsmith - Part 8</td>
+                                <td><ul>
+                                    <li>Modify AKM to comply with the required specifications</li>
+                                </ul></td>
+                                <td></td>
+                                <td></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow9">
+                                <td>Gunsmith - Part 9</td>
+                                <td><ul>
+                                    <li>Modify AK-74N to comply with the required specifications</li>
+                                </ul></td>
+                                <td></td>
+                                <td></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow10">
+                                <td>Gunsmith - Part 10</td>
+                                <td><ul>
+                                    <li>Modify AKM to comply with the required specifications</li>
+                                </ul></td>
+                                <td></td>
+                                <td></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow11">
+                                <td>Gunsmith - Part 11</td>
+                                <td><ul>
+                                    <li>Modify AS-VAL to comply with the required specifications</li>
+                                </ul></td>
+                                <td></td>
+                                <td></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow12">
+                                <td>Gunsmith - Part 12</td>
+                                <td><ul>
+                                    <li>Modify AK-102 to comply with the required specifications</li>
+                                </ul></td>
+                                <td></td>
+                                <td></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow13">
+                                <td>Gunsmith - Part 13</td>
+                                <td><ul>
+                                    <li>Modify SIG MPX to comply with the required specifications</li>
+                                </ul></td>
+                                <td></td>
+                                <td></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow14">
+                                <td>Gunsmith - Part 14</td>
+                                <td><ul>
+                                    <li>Modify AKMN to comply with the required specifications</li>
+                                </ul></td>
+                                <td></td>
+                                <td></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow15">
+                                <td>Gunsmith - Part 15</td>
+                                <td><ul>
+                                    <li>Modify M1A to comply with the required specifications</li>
+                                </ul></td>
+                                <td></td>
+                                <td></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow16">
+                                <td>Gunsmith - Part 16</td>
+                                <td><ul>
+                                    <li>Modify M4A1 to comply with the required specifications</li>
+                                </ul></td>
+                                <td></td>
+                                <td></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow17">
+                                <td>Farming - Part 1</td>
+                                <td><ul><li>Fix the first control board</li><li>Fix the second control board</li><li>Survive and exit the raid</li></ul></td>
+                                <td><ul><li>2x Toolset</li></ul></td>
+                                <td><ul><li>10,000 EXP</li><li>Mechanic Rep +0.04</li><li>25,000 Roubles</li></li></ul></td>
+                                <td><a href="">Youtube Walkthrough</a></td>
+                            </tr>
+                            <tr id="mechRow18">
+                                <td>Farming - Part 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow19">
+                                <td>Farming - Part 3</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow20">
+                                <td>Farming - Part 4</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow21">
+                                <td>Signal - Part 1</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow22">
+                                <td>Signal - Part 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow23">
+                                <td>Signal - Part 3</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow24">
+                                <td>Signal - Part 4</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow25">
+                                <td>Bad Habit</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow26">
+                                <td>Scout</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow27">
+                                <td>Insider</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow28">
+                                <td>Psycho Sniper</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow29">
+                                <td>Import</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow30">
+                                <td>Fertilizers</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow31">
+                                <td>A Shooter Born in Heaven</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow32">
+                                <td>The Tarkov Shooter - Part 1</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow33">
+                                <td>The Tarkov Shooter - Part 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow34">
+                                <td>The Tarkov Shooter - Part 3</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow35">
+                                <td>The Tarkov Shooter - Part 4</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow36">
+                                <td>The Tarkov Shooter - Part 5</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow37">
+                                <td>The Tarkov Shooter - Part 6</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow38">
+                                <td>The Tarkov Shooter - Part 7</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="mechRow39">
+                                <td>The Tarkov Shooter - Part 8</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>    
+                        </table>
+                        <table id="ragmanQuestTable" style="width:100%">
+                            <tr id="ragHeaders">
+                                <th>Quest Name</th>
+                                <th>Steps to Complete</th>
+                                <th>Items You'll Need</th>
+                                <th>Rewards</th>
+                                <th>Relevant Links</th>
+                            </tr>
+                            <tr id="ragRow1">
+                                <td>Only Business</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow2">
+                                <td>Make ULTRA Great Again</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow3">
+                                <td>Big Sale</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow4">
+                                <td>The Blood of War - Part 1</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow5">
+                                <td>Dressed to Kill</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow6">
+                                <td>Gratitude</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow7">
+                                <td>Sales Night</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow8">
+                                <td>Hot Delivery</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow9">
+                                <td>Database - Part 1</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow10">
+                                <td>Database - Part 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow11">
+                                <td>Minibus</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow12">
+                                <td>Sew it Good - Part 1</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow13">
+                                <td>Sew it Good - Part 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow14">
+                                <td>Set it Good - Part 3</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow15">
+                                <td>Set it Good - Part 4</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow16">
+                                <td>The Blood of War - Part 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow16">
+                                <td>The Blood of War - Part 3</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow16">
+                                <td>The Key to Success</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow16">
+                                <td>Living High is not a Crime - Part 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow16">
+                                <td>Living High is not a Crime - Part 2</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow16">
+                                <td>Charisma brings Success</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow16">
+                                <td>No Fuss Needed</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow16">
+                                <td>Supervisor</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr id="ragRow16">
+                                <td>Scavenger</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <table id="fenceQuestTable" style="width:100%">
+                            <tr id="fenceHeaders">
+                                <th>Quest Name</th>
+                                <th>Steps to Complete</th>
+                                <th>Items You'll Need</th>
+                                <th>Rewards</th>
+                                <th>Relevant Links</th>
+                            </tr>
+                            <tr id="fenceRow1">
+                                <td>A049 C026 0101PD</td>
+                                <td>Hand Over the Following: <ul><li>Old Firesteel</li><li>Antique Axe</li><li>Battered Antique Book</li><li>FireKlean gun lube</li><li>Golden Rooster</li><li>Silver Badge</li><li>Deadlyslob's Beard Oil</li><li>Golden 1GPhone</li><li>Jar of DevilDog Mayo</li><li>Can of Sprats</li><li>Fake Mustache</li><li>Kotton Beanie</li></ul></td>
+                                <td>None</td>
+                                <td><ul><li>Secure container Kappa</li></ul></td>
+                                <td>None</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div id="ammoPage">
+                    <iframe id="ammoIframe" width="1400" height="1000" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vR2q7p2Hxch92n6U_2NgCXPgNcwUzwHNcQcwHBuV3jpLstMcaBugub66_Hwp9T168xtAo10JSIkn1sA/pubhtml?widget=true&amp;headers=false"></iframe>
+                </div>
+                <div id="itemsPage">
+                    Items and Loots and Wishlists
+                </div>
+            </div>
+            <script>
+                $("#mapPage").hide();
+                $("#keyPage").hide();
+                $("#dealersPage").hide();
+                $("#questsPage").hide();
+                $("#ammoPage").hide();
+                $("#itemsPage").hide();
+                let currentMap = 'customs';
+                function showMaps() {
+                    $("#landingPage").hide();
+                    $("#keyPage").hide();
+                    $("#dealersPage").hide();
+                    $("#questsPage").hide();
+                    $("#ammoPage").hide();
+                    $("#itemsPage").hide();
+                    $("#mapPage").show();
+                    $("#factoryMap").hide();
+                    $("#factoryMap2").hide();
+                    $("#interchangeMap").hide();
+                    $("#labsMap").hide();
+                    $("#shorelineMap").hide();
+                    $("#woodsMap").hide();
+                }
+                function getMap() {
+                     var e = document.getElementById("mapSelection");
+                     var currentMap = e.options[e.selectedIndex].value;
+                     // currentMap = document.getElementById("mapSelection").value();
+                     console.log(currentMap);
+                     switch(currentMap){
+                     case "customs":
+                     $("#factoryMap").hide();
+                     $("#factoryMap2").hide();
+                     $("#interchangeMap").hide();
+                     $("#labsMap").hide();
+                     $("#shorelineMap").hide();
+                     $("#woodsMap").hide();
+                     $("#customsMap").show();
+                     break;
+                     case "factory":
+                     $("#customsMap").hide();
+                     $("#interchangeMap").hide();
+                     $("#labsMap").hide();
+                     $("#shorelineMap").hide();
+                     $("#woodsMap").hide();
+                     $("#factoryMap").show();
+                     $("#factoryMap2").show();
+                     break;
+                     case "interchange":
+                     $("#factoryMap").hide();
+                     $("#factoryMap2").hide();
+                     $("#customsMap").hide();
+                     $("#labsMap").hide();
+                     $("#shorelineMap").hide();
+                     $("#woodsMap").hide();
+                     $("#interchangeMap").show();
+                     break;
+                     case "labs":
+                     $("#factoryMap").hide();
+                     $("#factoryMap2").hide();
+                     $("#interchangeMap").hide();
+                     $("#customsMap").hide();
+                     $("#shorelineMap").hide();
+                     $("#woodsMap").hide();
+                     $("#labsMap").show();
+                     break;
+                     case "shoreline":
+                     $("#factoryMap").hide();
+                     $("#factoryMap2").hide();
+                     $("#interchangeMap").hide();
+                     $("#labsMap").hide();
+                     $("#customsMap").hide();
+                     $("#woodsMap").hide();
+                     $("#shorelineMap").show();
+                     break;
+                     case "woods":
+                     $("#factoryMap").hide();
+                     $("#factoryMap2").hide();
+                     $("#interchangeMap").hide();
+                     $("#labsMap").hide();
+                     $("#shorelineMap").hide();
+                     $("#customsMap").hide();
+                     $("#woodsMap").show();
+                     break;
+                     }
+                };
+
+                function vendorSelect() {
+                    vendor = $("#vendorSelection").val();
+                    switch (vendor) {
+                        case "prapor":
+                            $("#vendorPicture").html("");
+                            $("#vendorPicture").html("<img src='assets/images/prapor.jpeg'/>");
+                            $("#lvl2reqs").html("");
+                            $("#lvl2reqs").html("Level 15 & 1,000,000&#8381; Spent");
+                            $("#lvl3reqs").html("");
+                            $("#lvl3reqs").html("Level 22 & 1,500,000&#8381; Spent");
+                            $("#lvl4reqs").html("");
+                            $("#lvl4reqs").html("Level 33 & 2,300,000&#8381; Spent");
+                            $("#bestPrices").html("");
+                            $("#bestPrices").html("Things to sell to him:<ul><li>Weapons (Be sure to break them down first)</li><li>Ammo</li></ul>");
+                            break;
+                        case "therapist":
+                            $("#vendorPicture").html("");
+                            $("#vendorPicture").html("<img src='assets/images/therapist.jpeg' />");
+                            $("#lvl2reqs").html("");
+                            $("#lvl2reqs").html("Level 13 & 400,000&#8381; Spent");
+                            $("#lvl3reqs").html("");
+                            $("#lvl3reqs").html("Level 20 & 700,000&#8381; Spent");
+                            $("#lvl4reqs").html("");
+                            $("#lvl4reqs").html("Level 32 & 900,000&#8381; Spent");
+                            $("#bestPrices").html("");
+                            $("#bestPrices").html("Things to sell to her:<ul><li>Medical Supplies</li><li>Random Loot (Tape, screws, etc)</li><li>Extra Keys</li></ul>");
+                            break;
+                        case "skier":
+                            $("#vendorPicture").html("");
+                            $("#vendorPicture").html("<img src='assets/images/skier.jpeg' />");
+                            $("#lvl2reqs").html("");
+                            $("#lvl2reqs").html("Level 15 & 1,100,000&#8381; Spent");
+                            $("#lvl3reqs").html("");
+                            $("#lvl3reqs").html("Level 28 & 1,600,000&#8381; Spent");
+                            $("#lvl4reqs").html("");
+                            $("#lvl4reqs").html("Level 35 & 2,600,000&#8381; Spent");
+                            $("#bestPrices").html("");
+                            $("#bestPrices").html("Things to sell to him:<ul><li>Weapon Attachments</li></ul>");
+                            break;
+                        case "fence":
+                            $("#vendorPicture").html("");
+                            $("#vendorPicture").html("<img src='assets/images/fence.png' />");
+                            $("#lvl2reqs").html("");
+                            $("#lvl2reqs").html("None");
+                            $("#lvl3reqs").html("");
+                            $("#lvl3reqs").html("None");
+                            $("#lvl4reqs").html("");
+                            $("#lvl4reqs").html("None");
+                            $("#bestPrices").html("");
+                            $("#bestPrices").html("Things to sell to him:<ul><li>Anything No Other Trader will take</li><li>Selling things to Fence is always a last resort</li></ul>");
+                            break;
+                        case "mechanic":
+                            $("#vendorPicture").html("");
+                            $("#vendorPicture").html("<img src='assets/images/mechanic.jpeg' />");
+                            $("#lvl2reqs").html("");
+                            $("#lvl2reqs").html("Level 20 & 1,000,000&#8381; Spent");
+                            $("#lvl3reqs").html("");
+                            $("#lvl3reqs").html("Level 20 & 1,600,000&#8381; Spent");
+                            $("#lvl4reqs").html("");
+                            $("#lvl4reqs").html("Level 40 & 2,500,000&#8381; Spent");
+                            $("#bestPrices").html("");
+                            $("#bestPrices").html("Things to sell to him:<ul><li>Weapons (Be Sure to break them down first)</li></ul>");
+                            break;
+                        case "peacekeeper":
+                            $("#vendorPicture").html("");
+                            $("#vendorPicture").html("<img src='assets/images/peacekeeper.jpeg' />");
+                            $("#lvl2reqs").html("");
+                            $("#lvl2reqs").html("Level 10 & 13,000&#36; Spent");
+                            $("#lvl3reqs").html("");
+                            $("#lvl3reqs").html("Level 18 & 25,000&#36; Spent");
+                            $("#lvl4reqs").html("");
+                            $("#lvl4reqs").html("Level 29 & 32,000&#36; Spent");
+                            $("#bestPrices").html("");
+                            $("#bestPrices").html("Things to sell to him:<ul><li>Weapons (Be Sure to break them down first)</li></ul>");
+                            break;
+                        case "ragman":
+                            $("#vendorPicture").html("");
+                            $("#vendorPicture").html("<img src='assets/images/ragman.jpeg' />");
+                            $("#lvl2reqs").html("");
+                            $("#lvl2reqs").html("Level 20 & 1,000,000&#8381; Spent");
+                            $("#lvl3reqs").html("");
+                            $("#lvl3reqs").html("Level 20 & 1,600,000&#8381; Spent");
+                            $("#lvl4reqs").html("");
+                            $("#lvl4reqs").html("Level 40 & 2,500,000&#8381; Spent");
+                            $("#bestPrices").html("");
+                            $("#bestPrices").html("Things to sell to him:<ul><li>Armor</li><li>Clothing</li><li>Backpacks</li><li>Chest Rigs</li></ul>");
+                            break;
+                    }
+                }
+                function questSelection() {
+                    quests = $("#vendorQuestSelector").val();
+                    console.log(quests);
+                    console.log("testing");
+                    switch (quests) {
+                        case "prapor":
+                            $("#prapQuestPic").show();
+                            $("#therQuestPic").hide();
+                            $("#skierQuestPic").hide();
+                            $("#ragmanQuestPic").hide();
+                            $("#peaceQuestPic").hide();
+                            $("#fenceQuestPic").hide();
+                            $("#mechanicQuestPic").hide();
+                            $("#prapQuestTable").show();
+                            $("#therapistQuestTable").hide();
+                            $("#skierQuestTable").hide();
+                            $("#peacekeeperQuestTable").hide();
+                            $("#mechanicQuestTable").hide();
+                            $("#ragmanQuestTable").hide();
+                            $("#fenceQuestTable").hide();
+                            break;
+                        case "therapist":
+                            $("#prapQuestPic").hide();
+                            $("#therQuestPic").show();
+                            $("#skierQuestPic").hide();
+                            $("#ragmanQuestPic").hide();
+                            $("#peaceQuestPic").hide();
+                            $("#fenceQuestPic").hide();
+                            $("#mechanicQuestPic").hide();
+                            $("#prapQuestTable").hide();
+                            $("#therapistQuestTable").show();
+                            $("#skierQuestTable").hide();
+                            $("#peacekeeperQuestTable").hide();
+                            $("#mechanicQuestTable").hide();
+                            $("#ragmanQuestTable").hide();
+                            $("#fenceQuestTable").hide();
+                            break;
+                        case "skier":
+                            $("#prapQuestPic").hide();
+                            $("#therQuestPic").hide();
+                            $("#skierQuestPic").show();
+                            $("#ragmanQuestPic").hide();
+                            $("#peaceQuestPic").hide();
+                            $("#fenceQuestPic").hide();
+                            $("#mechanicQuestPic").hide();
+                            $("#prapQuestTable").hide();
+                            $("#therapistQuestTable").hide();
+                            $("#skierQuestTable").show();
+                            $("#peacekeeperQuestTable").hide();
+                            $("#mechanicQuestTable").hide();
+                            $("#ragmanQuestTable").hide();
+                            $("#fenceQuestTable").hide();
+                            break;
+                        case "peacekeeper":
+                            $("#prapQuestPic").hide();
+                            $("#therQuestPic").hide();
+                            $("#skierQuestPic").hide();
+                            $("#ragmanQuestPic").hide();
+                            $("#peaceQuestPic").show();
+                            $("#fenceQuestPic").hide();
+                            $("#mechanicQuestPic").hide();
+                            $("#prapQuestTable").hide();
+                            $("#therapistQuestTable").hide();
+                            $("#skierQuestTable").hide();
+                            $("#peacekeeperQuestTable").show();
+                            $("#mechanicQuestTable").hide();
+                            $("#ragmanQuestTable").hide();
+                            $("#fenceQuestTable").hide();
+                            break;
+                        case "mechanic":
+                            $("#prapQuestPic").hide();
+                            $("#therQuestPic").hide();
+                            $("#skierQuestPic").hide();
+                            $("#ragmanQuestPic").hide();
+                            $("#peaceQuestPic").hide();
+                            $("#fenceQuestPic").hide();
+                            $("#mechanicQuestPic").show();
+                            $("#prapQuestTable").hide();
+                            $("#therapistQuestTable").hide();
+                            $("#skierQuestTable").hide();
+                            $("#peacekeeperQuestTable").hide();
+                            $("#mechanicQuestTable").show();
+                            $("#ragmanQuestTable").hide();
+                            $("#fenceQuestTable").hide();
+                            break;
+                        case "ragman":
+                            $("#prapQuestPic").hide();
+                            $("#therQuestPic").hide();
+                            $("#skierQuestPic").hide();
+                            $("#ragmanQuestPic").show();
+                            $("#peaceQuestPic").hide();
+                            $("#fenceQuestPic").hide();
+                            $("#mechanicQuestPic").hide();
+                            $("#prapQuestTable").hide();
+                            $("#therapistQuestTable").hide();
+                            $("#skierQuestTable").hide();
+                            $("#peacekeeperQuestTable").hide();
+                            $("#mechanicQuestTable").hide();
+                            $("#ragmanQuestTable").show();
+                            $("#fenceQuestTable").hide();
+                            break;
+                        case "fence":
+                            $("#prapQuestPic").show();
+                            $("#therQuestPic").hide();
+                            $("#skierQuestPic").hide();
+                            $("#ragmanQuestPic").hide();
+                            $("#peaceQuestPic").hide();
+                            $("#fenceQuestPic").hide();
+                            $("#mechanicQuestPic").hide();
+                            $("#prapQuestTable").show();
+                            $("#therapistQuestTable").hide();
+                            $("#skierQuestTable").hide();
+                            $("#peacekeeperQuestTable").hide();
+                            $("#mechanicQuestTable").hide();
+                            $("#ragmanQuestTable").hide();
+                            $("#fenceQuestTable").hide();
+                            break;
+                   }
+                }
+                
+                function showKeys() {
+                    $("#landingPage").hide();
+                    $("#mapPage").hide();
+                    $("#dealersPage").hide();
+                    $("#questsPage").hide();
+                    $("#ammoPage").hide();
+                    $("#itemsPage").hide();
+                    $("#keyPage").show();
+                }
+                function showDealers() {
+                    $("#landingPage").hide();
+                    $("#keyPage").hide();
+                    $("#mapPage").hide();
+                    $("#questsPage").hide();
+                    $("#ammoPage").hide();
+                    $("#itemsPage").hide();
+                    $("#dealersPage").show();
+                
+                }
+                function showQuests() {
+                    $("#landingPage").hide();
+                    $("#keyPage").hide();
+                    $("#dealersPage").hide();
+                    $("#mapPage").hide();
+                    $("#ammoPage").hide();
+                    $("#itemsPage").hide();
+                    $("#questsPage").show();
+                    $("#therQuestPic").hide();
+                    $("#skierQuestPic").hide();
+                    $("#ragmanQuestPic").hide();
+                    $("#peaceQuestPic").hide();
+                    $("#fenceQuestPic").hide();
+                    $("#mechanicQuestPic").hide();
+                    $("#therapistQuestTable").hide();
+                    $("#skierQuestTable").hide();
+                    $("#mechanicQuestTable").hide();
+                    $("#fenceQuestTable").hide();
+                    $("#peacekeeperQuestTable").hide();
+                    $("#ragmanQuestTable").hide();
+                }
+                function showAmmo() {
+                    $("#landingPage").hide();
+                    $("#keyPage").hide();
+                    $("#dealersPage").hide();
+                    $("#questsPage").hide();
+                    $("#mapPage").hide();
+                    $("#itemsPage").hide();
+                    $("#ammoPage").show();
+                }
+                function showItems() {
+                    $("#landingPage").hide();
+                    $("#keyPage").hide();
+                    $("#dealersPage").hide();
+                    $("#questsPage").hide();
+                    $("#ammoPage").hide();
+                    $("#mapPage").hide();
+                    $("#itemsPage").show();
+                }
+            </script>
+    </body>
+</html>
